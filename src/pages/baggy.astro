@@ -1,0 +1,307 @@
+---
+// Lógica de servidor de Astro
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baggy Pants - OBSIDIAN STORE</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Libertinus Serif', serif;
+            background-image: url('/Lily.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #ffffff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 45px;
+            margin-bottom: 50px;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8); 
+        }
+
+        /* --- CUADRÍCULA ESTRICTA DE 50/50 --- */
+        .catalogo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr)); 
+            gap: 40px;
+            max-width: 1000px; 
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .catalogo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- DISEÑO DE LAS TARJETAS --- */
+        .producto {
+            background-color: #ffffff;
+            color: #050505; 
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%; 
+        }
+
+        .producto:hover {
+            transform: translateY(-5px);
+        }
+
+        .producto > img {
+            width: 100%;
+            height: 350px;
+            object-fit: contain; 
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .producto h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .producto p.precio {
+            color: #555555;
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* --- SELECTOR DE TALLA --- */
+        .selector-talla {
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .selector-talla select {
+            padding: 5px 15px;
+            font-size: 16px;
+            border: 2px solid #050505;
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: #050505;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        .selector-talla select:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- BOTÓN DE WHATSAPP --- */
+        .btn-whatsapp {
+            display: inline-block;
+            background-color: #050505;
+            color: #ffffff;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 30px;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #333333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>BAGGY PANTS</h1>
+
+    <div class="catalogo-grid">
+        
+        <!-- PRODUCTO 1: Baggy Laser -->
+        <div class="producto">
+            <img src="/baggylasser1.png" alt="Baggy Laser">
+            <h3>Baggy Laser</h3>
+            <p class="precio">$22.00</p>
+            <div class="selector-talla">
+                <label for="talla-laser1">Talla:</label>
+                <select id="talla-laser1" onchange="actualizarWhatsApp('talla-laser1', 'btn-laser1', 'Baggy Laser')">
+                    <option value="32">32</option>
+                </select>
+            </div>
+            <a href="#" id="btn-laser1" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 2: Baggy Rayos Claro -->
+        <div class="producto">
+            <img src="/laser2.png" alt="Baggy Rayos Claro">
+            <h3>Baggy Rayos Claro</h3>
+            <p class="precio">$22.00</p>
+            <div class="selector-talla">
+                <label for="talla-rayosclaro">Talla:</label>
+                <select id="talla-rayosclaro" onchange="actualizarWhatsApp('talla-rayosclaro', 'btn-rayosclaro', 'Baggy Rayos Claro')">
+                    <option value="32">32</option>
+                </select>
+            </div>
+            <a href="#" id="btn-rayosclaro" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 3: Baggy Rayos Oscuro -->
+        <div class="producto">
+            <img src="/laser3.png" alt="Baggy Rayos Oscuro">
+            <h3>Baggy Rayos Oscuro</h3>
+            <p class="precio">$22.00</p>
+            <div class="selector-talla">
+                <label for="talla-rayososcuro">Talla:</label>
+                <select id="talla-rayososcuro" onchange="actualizarWhatsApp('talla-rayososcuro', 'btn-rayososcuro', 'Baggy Rayos Oscuro')">
+                    <option value="32">32</option>
+                </select>
+            </div>
+            <a href="#" id="btn-rayososcuro" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 4: Baggy Premium (Antes Peluche, movido aquí) -->
+        <div class="producto">
+            <img src="/baggypeluche.png" alt="Baggy Premium">
+            <h3>Baggy Premium</h3>
+            <p class="precio">$26.00</p>
+            <div class="selector-talla">
+                <label for="talla-premium">Talla:</label>
+                <select id="talla-premium" onchange="actualizarWhatsApp('talla-premium', 'btn-premium', 'Baggy Premium')">
+                    <option value="32">32</option>
+                    <option value="34">34</option>
+                </select>
+            </div>
+            <a href="#" id="btn-premium" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 5: Baggy Azul -->
+        <div class="producto">
+            <img src="/baggyazul.png" alt="Baggy Azul">
+            <h3>Baggy Azul</h3>
+            <p class="precio">$16.50</p>
+            <div class="selector-talla">
+                <label for="talla-azul">Talla:</label>
+                <select id="talla-azul" onchange="actualizarWhatsApp('talla-azul', 'btn-azul', 'Baggy Azul')">
+                    <option value="28">28</option>
+                </select>
+            </div>
+            <a href="#" id="btn-azul" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 6: Baggy S Azul -->
+        <div class="producto">
+            <img src="/baggysazul.png" alt="Baggy S Azul">
+            <h3>Baggy S Azul</h3>
+            <p class="precio">$16.50</p>
+            <div class="selector-talla">
+                <label for="talla-sazul">Talla:</label>
+                <select id="talla-sazul" onchange="actualizarWhatsApp('talla-sazul', 'btn-sazul', 'Baggy S Azul')">
+                    <option value="32">32</option>
+                </select>
+            </div>
+            <a href="#" id="btn-sazul" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 7: Baggy Negro -->
+        <div class="producto">
+            <img src="/baggynegro.png" alt="Baggy Negro">
+            <h3>Baggy Negro</h3>
+            <p class="precio">$16.50</p>
+            <div class="selector-talla">
+                <label for="talla-negro">Talla:</label>
+                <select id="talla-negro" onchange="actualizarWhatsApp('talla-negro', 'btn-negro', 'Baggy Negro')">
+                    <option value="28">28</option>
+                    <option value="32">32</option>
+                    <option value="34">34</option>
+                    <option value="36">36</option>
+                </select>
+            </div>
+            <a href="#" id="btn-negro" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 8: Baggy Gris -->
+        <div class="producto">
+            <img src="/baggygris.png" alt="Baggy Gris">
+            <h3>Baggy Gris</h3>
+            <p class="precio">$16.50</p>
+            <div class="selector-talla">
+                <label for="talla-gris">Talla:</label>
+                <select id="talla-gris" onchange="actualizarWhatsApp('talla-gris', 'btn-gris', 'Baggy Gris')">
+                    <option value="28">28</option>
+                    <option value="34">34</option>
+                    <option value="36">36</option>
+                </select>
+            </div>
+            <a href="#" id="btn-gris" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 9: Baggy Claro -->
+        <div class="producto">
+            <img src="/baggyclaro.png" alt="Baggy Claro"> 
+            <h3>Baggy Claro</h3>
+            <p class="precio">$16.50</p>
+            <div class="selector-talla">
+                <label for="talla-claro">Talla:</label>
+                <select id="talla-claro" onchange="actualizarWhatsApp('talla-claro', 'btn-claro', 'Baggy Claro')">
+                    <option value="28">28</option>
+                </select>
+            </div>
+            <a href="#" id="btn-claro" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT DE WHATSAPP INTELIGENTE -->
+    <script is:inline>
+        function actualizarWhatsApp(idSelect, idBoton, nombreProducto) {
+            const numeroObsidian = "593962596100"; 
+            
+            const select = document.getElementById(idSelect);
+            const tallaElegida = select.value;
+            
+            const mensajeFinal = "Hola, quiero comprar el pantalón " + nombreProducto + " en talla " + tallaElegida;
+            
+            const enlaceCompleto = "https://wa.me/" + numeroObsidian + "?text=" + encodeURIComponent(mensajeFinal);
+            document.getElementById(idBoton).href = enlaceCompleto;
+        }
+
+        window.onload = function() {
+            actualizarWhatsApp('talla-laser1', 'btn-laser1', 'Baggy Laser');
+            actualizarWhatsApp('talla-rayosclaro', 'btn-rayosclaro', 'Baggy Rayos Claro');
+            actualizarWhatsApp('talla-rayososcuro', 'btn-rayososcuro', 'Baggy Rayos Oscuro');
+            actualizarWhatsApp('talla-premium', 'btn-premium', 'Baggy Premium');
+            actualizarWhatsApp('talla-azul', 'btn-azul', 'Baggy Azul');
+            actualizarWhatsApp('talla-sazul', 'btn-sazul', 'Baggy S Azul');
+            actualizarWhatsApp('talla-negro', 'btn-negro', 'Baggy Negro');
+            actualizarWhatsApp('talla-gris', 'btn-gris', 'Baggy Gris');
+            actualizarWhatsApp('talla-claro', 'btn-claro', 'Baggy Claro');
+        };
+    </script>
+</body>
+</html>

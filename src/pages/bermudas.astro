@@ -1,0 +1,117 @@
+---
+// Lógica de servidor de Astro
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bermudas - OBSIDIAN STORE</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Libertinus Serif', serif; background-image: url('/Lily.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: #ffffff; padding: 50px 20px; text-align: center; }
+        h1 { font-size: 45px; margin-bottom: 50px; letter-spacing: 3px; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); }
+        .catalogo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; max-width: 1000px; margin: 0 auto; width: 100%; }
+        @media (max-width: 768px) { .catalogo-grid { grid-template-columns: 1fr; } }
+        .producto { background-color: #ffffff; color: #050505; padding: 20px; border-radius: 10px; transition: transform 0.3s ease; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; justify-content: space-between; width: 100%; }
+        .producto:hover { transform: translateY(-5px); }
+        .producto > img { width: 100%; height: 350px; object-fit: contain; border-radius: 5px; margin-bottom: 20px; }
+        .producto h3 { font-size: 22px; margin-bottom: 10px; }
+        .producto p.precio { color: #555555; font-size: 18px; margin-bottom: 15px; font-weight: bold; }
+        .selector-talla { margin-bottom: 20px; font-weight: bold; font-size: 18px; }
+        .selector-talla select { padding: 5px 15px; font-size: 16px; border: 2px solid #050505; border-radius: 5px; background-color: #ffffff; color: #050505; font-family: inherit; font-weight: bold; cursor: pointer; margin-left: 10px; outline: none; transition: background 0.3s; }
+        .selector-talla select:hover { background-color: #f0f0f0; }
+        .btn-whatsapp { display: inline-block; background-color: #050505; color: #ffffff; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 30px; transition: background 0.3s; width: 100%; margin-top: auto; }
+        .btn-whatsapp:hover { background-color: #333333; }
+    </style>
+</head>
+<body>
+
+    <h1>CATÁLOGO BERMUDAS</h1>
+
+    <div class="catalogo-grid">
+        
+        <!-- PRODUCTO 1: BERMUDA VALEY -->
+        <div class="producto">
+            <img src="/bermuda-valey.png" alt="Bermuda Valey">
+            <h3>Bermuda Valey</h3>
+            <p class="precio">$15.00</p>
+            <div class="selector-talla">
+                <label for="talla-valey">Talla:</label>
+                <select id="talla-valey" onchange="actualizarWhatsApp('talla-valey', 'btn-valey', 'Bermuda Valey')">
+                    <option value="32">32</option>
+                    <option value="34">34</option>
+                </select>
+            </div>
+            <a href="#" id="btn-valey" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 2: BERMUDA LASER -->
+        <div class="producto">
+            <img src="/bermudalaser.png" alt="Bermuda Laser">
+            <h3>Bermuda Laser</h3>
+            <p class="precio">$15.00</p>
+            <div class="selector-talla">
+                <label for="talla-laser">Talla:</label>
+                <select id="talla-laser" onchange="actualizarWhatsApp('talla-laser', 'btn-laser', 'Bermuda Laser')">
+                    <option value="32">32</option>
+                </select>
+            </div>
+            <a href="#" id="btn-laser" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 3: BERMUDA CLARA -->
+        <div class="producto">
+            <img src="/niño.png" alt="Bermuda Clara">
+            <h3>Bermuda Clara</h3>
+            <p class="precio">$15.00</p>
+            <div class="selector-talla">
+                <label for="talla-clara">Talla:</label>
+                <select id="talla-clara" onchange="actualizarWhatsApp('talla-clara', 'btn-clara', 'Bermuda Clara')">
+                    <option value="36">36</option>
+                </select>
+            </div>
+            <a href="#" id="btn-clara" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 4: BERMUDA GRIS -->
+        <div class="producto">
+            <img src="/grisbermuda.png" alt="Bermuda Gris">
+            <h3>Bermuda Gris</h3>
+            <p class="precio">$15.00</p>
+            <div class="selector-talla">
+                <label for="talla-gris">Talla:</label>
+                <select id="talla-gris" onchange="actualizarWhatsApp('talla-gris', 'btn-gris', 'Bermuda Gris')">
+                    <option value="34">34</option>
+                </select>
+            </div>
+            <a href="#" id="btn-gris" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+    </div>
+
+    <script is:inline>
+        function actualizarWhatsApp(idSelect, idBoton, nombreProducto) {
+            const numeroObsidian = "593962596100"; 
+            const select = document.getElementById(idSelect);
+            const tallaElegida = select.value;
+            const mensajeFinal = "Hola, quiero comprar la " + nombreProducto + " en talla " + tallaElegida;
+            const enlaceCompleto = "https://wa.me/" + numeroObsidian + "?text=" + encodeURIComponent(mensajeFinal);
+            document.getElementById(idBoton).href = enlaceCompleto;
+        }
+
+        window.onload = function() {
+            actualizarWhatsApp('talla-valey', 'btn-valey', 'Bermuda Valey');
+            actualizarWhatsApp('talla-laser', 'btn-laser', 'Bermuda Laser');
+            actualizarWhatsApp('talla-clara', 'btn-clara', 'Bermuda Clara');
+            actualizarWhatsApp('talla-gris', 'btn-gris', 'Bermuda Gris');
+        };
+    </script>
+</body>
+</html>

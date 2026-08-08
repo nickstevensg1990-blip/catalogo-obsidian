@@ -1,0 +1,380 @@
+---
+// Lógica de servidor de Astro
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camisetas y Hoodies - OBSIDIAN STORE</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Libertinus Serif', serif;
+            background-image: url('/Lily.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #ffffff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 45px;
+            margin-bottom: 50px;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8); 
+        }
+
+        /* --- CUADRÍCULA ESTRICTA DE 50/50 --- */
+        .catalogo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr)); 
+            gap: 40px;
+            max-width: 1000px; 
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .catalogo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- DISEÑO DE LAS TARJETAS --- */
+        .producto {
+            background-color: #ffffff;
+            color: #050505; 
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%; 
+        }
+
+        .producto:hover {
+            transform: translateY(-5px);
+        }
+
+        .producto > img {
+            width: 100%;
+            height: 350px;
+            object-fit: contain; 
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .producto h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .producto p.precio {
+            color: #555555;
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* --- SELECTOR DE TALLA --- */
+        .selector-talla {
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .selector-talla select {
+            padding: 5px 15px;
+            font-size: 16px;
+            border: 2px solid #050505;
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: #050505;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        .selector-talla select:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- BOTÓN DE WHATSAPP --- */
+        .btn-whatsapp {
+            display: inline-block;
+            background-color: #050505;
+            color: #ffffff;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 30px;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #333333;
+        }
+
+        /* --- ESTILOS DEL CARRUSEL --- */
+        .carrusel {
+            position: relative;
+            width: 100%;
+            height: 350px; 
+            overflow: hidden;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .carrusel-imagenes {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .carrusel-imagenes img {
+            width: 100%;
+            flex: 0 0 100%; 
+            height: 100%;
+            object-fit: contain; 
+        }
+
+        .flecha {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(5, 5, 5, 0.6);
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 10;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .flecha:hover {
+            background-color: rgba(5, 5, 5, 1);
+        }
+
+        .flecha-izq {
+            left: 10px;
+        }
+
+        .flecha-der {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>HOODIES & CAMISETAS</h1>
+
+    <div class="catalogo-grid">
+        
+        <!-- PRODUCTO 1: CAMISETA BOXY FIT BÁSICA -->
+        <div class="producto">
+            <div class="carrusel">
+                <button class="flecha flecha-izq" onclick="moverCarrusel(-1, 'track-basica')">&#10094;</button>
+                
+                <div class="carrusel-imagenes" id="track-basica" data-index="0">
+                    <img src="/Llana-blanca.png" alt="Llana Blanca">
+                    <img src="/Llana-gris.png" alt="Llana Gris">
+                    <img src="/Llana-negra.png" alt="Llana Negra">
+                    <img src="/llana-vino.png" alt="Llana Vino">
+                </div>
+
+                <button class="flecha flecha-der" onclick="moverCarrusel(1, 'track-basica')">&#10095;</button>
+            </div>
+
+            <h3>Camiseta Boxy fit Basica</h3>
+            <p class="precio">$12.00</p>
+            
+            <div class="selector-talla">
+                <label for="talla-basica">Talla:</label>
+                <select id="talla-basica" onchange="actualizarWhatsApp('talla-basica', 'btn-basica', 'Camiseta Boxy fit Basica')">
+                    <option value="S">S</option>
+                    <option value="M" selected>M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+            </div>
+
+            <a href="#" id="btn-basica" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 2: PROMOCIÓN 3x30 -->
+        <div class="producto">
+            <img src="/Promocion.png" alt="Promoción 3x30 Obsidian">
+            <h3>Promo 3 Camisetas x $30</h3>
+            <p class="precio">$30.00</p>
+            <a href="https://wa.me/593962596100?text=Hola,%20me%20interesa%20la%20Promo%203x30.%20Quisiera%20elegir%20los%20colores%20y%20tallas." target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 3: CAMISETA SATORU GOJO -->
+        <div class="producto">
+            <div class="carrusel">
+                <button class="flecha flecha-izq" onclick="moverCarrusel(-1, 'track-gojo')">&#10094;</button>
+                
+                <div class="carrusel-imagenes" id="track-gojo" data-index="0">
+                    <img src="/Satoru-delantero.png" alt="Satoru Gojo Delantero">
+                    <img src="/Satoru-trasero.png" alt="Satoru Gojo Trasero">
+                </div>
+
+                <button class="flecha flecha-der" onclick="moverCarrusel(1, 'track-gojo')">&#10095;</button>
+            </div>
+
+            <h3>Camiseta Boxy fit Satoru Gojo</h3>
+            <p class="precio">$25.00</p>
+            
+            <div class="selector-talla">
+                <label for="talla-gojo">Talla:</label>
+                <select id="talla-gojo" onchange="actualizarWhatsApp('talla-gojo', 'btn-gojo', 'Camiseta Boxy fit Satoru Gojo')">
+                    <option value="S">S</option>
+                    <option value="M" selected>M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+            </div>
+
+            <a href="#" id="btn-gojo" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 4: CAMISETA HELTA CAFE -->
+        <div class="producto">
+            <img src="/esqueletocafe.jpeg" alt="Camiseta Helta Cafe">
+            <h3>Camiseta Helta Cafe</h3>
+            <p class="precio">$16.00</p>
+            
+            <div class="selector-talla">
+                <label for="talla-ecafe">Talla:</label>
+                <select id="talla-ecafe" onchange="actualizarWhatsApp('talla-ecafe', 'btn-ecafe', 'Camiseta Helta Cafe')">
+                    <option value="M" selected>M</option>
+                    <option value="L">L</option>
+                </select>
+            </div>
+
+            <a href="#" id="btn-ecafe" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 5: CAMISETA HELTA VINO -->
+        <div class="producto">
+            <img src="/esqueletovino.jpeg" alt="Camiseta Helta Vino">
+            <h3>Camiseta Helta Vino</h3>
+            <p class="precio">$16.00</p>
+            
+            <div class="selector-talla">
+                <label for="talla-evino">Talla:</label>
+                <select id="talla-evino" onchange="actualizarWhatsApp('talla-evino', 'btn-evino', 'Camiseta Helta Vino')">
+                    <option value="M" selected>M</option>
+                    <option value="L">L</option>
+                </select>
+            </div>
+
+            <a href="#" id="btn-evino" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 6: CAMISETA NIGHT MARE NEGRO -->
+        <div class="producto">
+            <img src="/estrellasnegro.jpeg" alt="Camiseta Boxy fit Night Mare Negro">
+            <h3>Camiseta Boxy fit Night Mare Negro</h3>
+            <p class="precio">$16.00</p>
+            
+            <div class="selector-talla">
+                <label for="talla-eneg">Talla:</label>
+                <select id="talla-eneg" onchange="actualizarWhatsApp('talla-eneg', 'btn-eneg', 'Camiseta Boxy fit Night Mare Negro')">
+                    <option value="M" selected>M</option>
+                    <option value="L">L</option>
+                </select>
+            </div>
+
+            <a href="#" id="btn-eneg" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 7: CAMISETA NIGHT MARE GRIS -->
+        <div class="producto">
+            <img src="/estrellasgris.jpeg" alt="Camiseta Boxy fit Night Mare Gris">
+            <h3>Camiseta Boxy fit Night Mare Gris</h3>
+            <p class="precio">$16.00</p>
+            
+            <div class="selector-talla">
+                <label for="talla-egris">Talla:</label>
+                <select id="talla-egris" onchange="actualizarWhatsApp('talla-egris', 'btn-egris', 'Camiseta Boxy fit Night Mare Gris')">
+                    <option value="M" selected>M</option>
+                    <option value="L">L</option>
+                </select>
+            </div>
+
+            <a href="#" id="btn-egris" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT -->
+    <script is:inline>
+        function moverCarrusel(direccion, idTrack) {
+            const track = document.getElementById(idTrack);
+            const totalImagenes = track.children.length;
+            
+            let indiceActual = parseInt(track.getAttribute('data-index')) || 0;
+            
+            indiceActual += direccion;
+
+            if (indiceActual >= totalImagenes) {
+                indiceActual = 0;
+            }
+            if (indiceActual < 0) {
+                indiceActual = totalImagenes - 1;
+            }
+
+            track.setAttribute('data-index', indiceActual);
+
+            const desplazamiento = -(indiceActual * 100);
+            track.style.transform = `translateX(${desplazamiento}%)`;
+        }
+
+        function actualizarWhatsApp(idSelect, idBoton, nombreProducto) {
+            const numeroObsidian = "593962596100"; 
+            
+            const select = document.getElementById(idSelect);
+            const tallaElegida = select.value;
+            
+            const mensajeFinal = "Hola, quiero comprar la " + nombreProducto + " en talla " + tallaElegida;
+            
+            const enlaceCompleto = "https://wa.me/" + numeroObsidian + "?text=" + encodeURIComponent(mensajeFinal);
+            document.getElementById(idBoton).href = enlaceCompleto;
+        }
+
+        window.onload = function() {
+            actualizarWhatsApp('talla-basica', 'btn-basica', 'Camiseta Boxy fit Basica');
+            actualizarWhatsApp('talla-gojo', 'btn-gojo', 'Camiseta Boxy fit Satoru Gojo');
+            actualizarWhatsApp('talla-ecafe', 'btn-ecafe', 'Camiseta Helta Cafe');
+            actualizarWhatsApp('talla-evino', 'btn-evino', 'Camiseta Helta Vino');
+            actualizarWhatsApp('talla-eneg', 'btn-eneg', 'Camiseta Boxy fit Night Mare Negro');
+            actualizarWhatsApp('talla-egris', 'btn-egris', 'Camiseta Boxy fit Night Mare Gris');
+        };
+    </script>
+</body>
+</html>

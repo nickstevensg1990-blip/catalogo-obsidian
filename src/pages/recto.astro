@@ -1,0 +1,115 @@
+---
+// Lógica de servidor de Astro
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantalones Rectos - OBSIDIAN STORE</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Libertinus Serif', serif; background-image: url('/Lily.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: #ffffff; padding: 50px 20px; text-align: center; }
+        h1 { font-size: 45px; margin-bottom: 50px; letter-spacing: 3px; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); }
+        .catalogo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; max-width: 1000px; margin: 0 auto; width: 100%; }
+        @media (max-width: 768px) { .catalogo-grid { grid-template-columns: 1fr; } }
+        .producto { background-color: #ffffff; color: #050505; padding: 20px; border-radius: 10px; transition: transform 0.3s ease; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; justify-content: space-between; width: 100%; }
+        .producto:hover { transform: translateY(-5px); }
+        .producto > img { width: 100%; height: 350px; object-fit: contain; border-radius: 5px; margin-bottom: 20px; }
+        .producto h3 { font-size: 22px; margin-bottom: 10px; }
+        .producto p.precio { color: #555555; font-size: 18px; margin-bottom: 15px; font-weight: bold; }
+        .selector-talla { margin-bottom: 20px; font-weight: bold; font-size: 18px; }
+        .selector-talla select { padding: 5px 15px; font-size: 16px; border: 2px solid #050505; border-radius: 5px; background-color: #ffffff; color: #050505; font-family: inherit; font-weight: bold; cursor: pointer; margin-left: 10px; outline: none; transition: background 0.3s; }
+        .selector-talla select:hover { background-color: #f0f0f0; }
+        .btn-whatsapp { display: inline-block; background-color: #050505; color: #ffffff; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 30px; transition: background 0.3s; width: 100%; margin-top: auto; }
+        .btn-whatsapp:hover { background-color: #333333; }
+    </style>
+</head>
+<body>
+
+    <h1>PANTALONES RECTOS</h1>
+
+    <div class="catalogo-grid">
+        
+        <!-- PRODUCTO 1: Recto Azul -->
+        <div class="producto">
+            <img src="/rectoazul.png" alt="Recto Azul">
+            <h3>Recto Azul</h3>
+            <p class="precio">$15.00</p>
+            <div class="selector-talla">
+                <label for="talla-razul">Talla:</label>
+                <select id="talla-razul" onchange="actualizarWhatsApp('talla-razul', 'btn-razul', 'Recto Azul')">
+                    <option value="34">34</option>
+                </select>
+            </div>
+            <a href="#" id="btn-razul" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 2: Recto Azul Gaba -->
+        <div class="producto">
+            <img src="/rectoazulgaba.png" alt="Recto Azul Gaba">
+            <h3>Recto Azul Gaba</h3>
+            <p class="precio">$15.00</p>
+            <div class="selector-talla">
+                <label for="talla-razulgaba">Talla:</label>
+                <select id="talla-razulgaba" onchange="actualizarWhatsApp('talla-razulgaba', 'btn-razulgaba', 'Recto Azul Gaba')">
+                    <option value="32">32</option>
+                </select>
+            </div>
+            <a href="#" id="btn-razulgaba" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 3: Cafe Gaba -->
+        <div class="producto">
+            <img src="/cafegaba.png" alt="Cafe Gaba">
+            <h3>Cafe Gaba</h3>
+            <p class="precio">$15.00</p>
+            <div class="selector-talla">
+                <label for="talla-cgaba">Talla:</label>
+                <select id="talla-cgaba" onchange="actualizarWhatsApp('talla-cgaba', 'btn-cgaba', 'Cafe Gaba')">
+                    <option value="34">34</option>
+                </select>
+            </div>
+            <a href="#" id="btn-cgaba" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 4: Cafe Pana -->
+        <div class="producto">
+            <img src="/cafepana.png" alt="Cafe Pana">
+            <h3>Cafe Pana</h3>
+            <p class="precio">$15.00</p>
+            <div class="selector-talla">
+                <label for="talla-cpana">Talla:</label>
+                <select id="talla-cpana" onchange="actualizarWhatsApp('talla-cpana', 'btn-cpana', 'Cafe Pana')">
+                    <option value="32">32</option>
+                </select>
+            </div>
+            <a href="#" id="btn-cpana" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+    </div>
+
+    <script is:inline>
+        function actualizarWhatsApp(idSelect, idBoton, nombreProducto) {
+            const numeroObsidian = "593962596100"; 
+            const select = document.getElementById(idSelect);
+            const tallaElegida = select.value;
+            const mensajeFinal = "Hola, quiero comprar el pantalón " + nombreProducto + " en talla " + tallaElegida;
+            const enlaceCompleto = "https://wa.me/" + numeroObsidian + "?text=" + encodeURIComponent(mensajeFinal);
+            document.getElementById(idBoton).href = enlaceCompleto;
+        }
+        window.onload = function() {
+            actualizarWhatsApp('talla-razul', 'btn-razul', 'Recto Azul');
+            actualizarWhatsApp('talla-razulgaba', 'btn-razulgaba', 'Recto Azul Gaba');
+            actualizarWhatsApp('talla-cgaba', 'btn-cgaba', 'Cafe Gaba');
+            actualizarWhatsApp('talla-cpana', 'btn-cpana', 'Cafe Pana');
+        };
+    </script>
+</body>
+</html>
