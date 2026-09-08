@@ -97,6 +97,7 @@
             margin-bottom: 20px;
             font-weight: bold;
             font-size: 18px;
+            min-height: 34px; 
         }
 
         .selector-talla select {
@@ -116,6 +117,13 @@
 
         .selector-talla select:hover {
             background-color: #f0f0f0;
+        }
+
+        .mensaje-talla {
+            font-size: 16px;
+            font-weight: normal;
+            color: #777;
+            font-style: italic;
         }
 
         /* --- BOTÓN DE WHATSAPP --- */
@@ -143,35 +151,87 @@
 
     <div class="catalogo-grid">
         
-        <!-- PRODUCTO 1: Baggy Laser -->
+        <!-- PRODUCTO 1: Baggy Barrel Gris -->
         <div class="producto">
-            <img src="/baggylasser1.png" alt="Baggy Laser">
-            <h3>Baggy Laser</h3>
-            <p class="precio">$22.00</p>
+            <img src="/baggygrisbarrel.jpeg" alt="Baggy Barrel Gris">
+            <h3>Baggy Barrel Gris</h3>
+            <p class="precio">$27.00</p>
             <div class="selector-talla">
-                <label for="talla-laser1">Talla:</label>
-                <select id="talla-laser1" onchange="actualizarWhatsApp('talla-laser1', 'btn-laser1', 'Baggy Laser')">
-                    <option value="32">32</option>
-                </select>
+                <span class="mensaje-talla">Consultar talla por WhatsApp</span>
             </div>
-            <a href="#" id="btn-laser1" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+            <a href="#" id="btn-barrelgris" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
         </div>
 
-        <!-- PRODUCTO 2: Baggy Rayos Claro -->
+        <!-- PRODUCTO 2: Baggy Barrel Cafe -->
         <div class="producto">
-            <img src="/laser2.png" alt="Baggy Rayos Claro">
-            <h3>Baggy Rayos Claro</h3>
-            <p class="precio">$22.00</p>
+            <img src="/baggybarrelcafe.jpeg" alt="Baggy Barrel Cafe">
+            <h3>Baggy Barrel Cafe</h3>
+            <p class="precio">$27.00</p>
             <div class="selector-talla">
-                <label for="talla-rayosclaro">Talla:</label>
-                <select id="talla-rayosclaro" onchange="actualizarWhatsApp('talla-rayosclaro', 'btn-rayosclaro', 'Baggy Rayos Claro')">
-                    <option value="32">32</option>
-                </select>
+                <span class="mensaje-talla">Consultar talla por WhatsApp</span>
             </div>
-            <a href="#" id="btn-rayosclaro" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+            <a href="#" id="btn-barrelcafe" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
         </div>
 
-        <!-- PRODUCTO 3: Baggy Rayos Oscuro -->
+        <!-- PRODUCTO 3: Baggy Barrel Gris Exclusivo -->
+        <div class="producto">
+            <img src="/baggybarrelgris.jpeg" alt="Baggy Barrel Gris Exclusivo">
+            <h3>Baggy Barrel Gris Exclusivo</h3>
+            <p class="precio">$27.00</p>
+            <div class="selector-talla">
+                <span class="mensaje-talla">Consultar talla por WhatsApp</span>
+            </div>
+            <a href="#" id="btn-barrelexclusivo" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 4: Baggy Skate Gris -->
+        <div class="producto">
+            <img src="/baggyskategris.jpeg" alt="Baggy Skate Gris">
+            <h3>Baggy Skate Gris</h3>
+            <p class="precio">$27.00</p>
+            <div class="selector-talla">
+                <span class="mensaje-talla">Consultar talla por WhatsApp</span>
+            </div>
+            <a href="#" id="btn-skategris" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 5: Baggy Skate Camo -->
+        <div class="producto">
+            <img src="/baggyskatecamo.jpeg" alt="Baggy Skate Camo">
+            <h3>Baggy Skate Camo</h3>
+            <p class="precio">$27.00</p>
+            <div class="selector-talla">
+                <span class="mensaje-talla">Consultar talla por WhatsApp</span>
+            </div>
+            <a href="#" id="btn-skatecamo" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 6: Baggy Skate -->
+        <div class="producto">
+            <img src="/baggyskate.jpeg" alt="Baggy Skate">
+            <h3>Baggy Skate</h3>
+            <p class="precio">$27.00</p>
+            <div class="selector-talla">
+                <span class="mensaje-talla">Consultar talla por WhatsApp</span>
+            </div>
+            <a href="#" id="btn-skate" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 7: Super Baggy Negro -->
+        <div class="producto">
+            <img src="/superbaggy.jpeg" alt="Super Baggy Negro">
+            <h3>Super Baggy Negro</h3>
+            <p class="precio">$27.00</p>
+            <div class="selector-talla">
+                <label for="talla-super">Talla:</label>
+                <select id="talla-super" onchange="actualizarWhatsApp('talla-super', 'btn-super', 'Super Baggy Negro')">
+                    <option value="30 (Última unidad)">30 (Última unidad)</option>
+                </select>
+            </div>
+            <a href="#" id="btn-super" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO 8: Baggy Rayos Oscuro (Anterior) -->
         <div class="producto">
             <img src="/laser3.png" alt="Baggy Rayos Oscuro">
             <h3>Baggy Rayos Oscuro</h3>
@@ -185,7 +245,7 @@
             <a href="#" id="btn-rayososcuro" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
         </div>
 
-        <!-- PRODUCTO 4: Baggy Premium (Antes Peluche, movido aquí) -->
+        <!-- PRODUCTO 9: Baggy Premium (Anterior) -->
         <div class="producto">
             <img src="/baggypeluche.png" alt="Baggy Premium">
             <h3>Baggy Premium</h3>
@@ -200,107 +260,41 @@
             <a href="#" id="btn-premium" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
         </div>
 
-        <!-- PRODUCTO 5: Baggy Azul -->
-        <div class="producto">
-            <img src="/baggyazul.png" alt="Baggy Azul">
-            <h3>Baggy Azul</h3>
-            <p class="precio">$16.50</p>
-            <div class="selector-talla">
-                <label for="talla-azul">Talla:</label>
-                <select id="talla-azul" onchange="actualizarWhatsApp('talla-azul', 'btn-azul', 'Baggy Azul')">
-                    <option value="28">28</option>
-                </select>
-            </div>
-            <a href="#" id="btn-azul" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO 6: Baggy S Azul -->
-        <div class="producto">
-            <img src="/baggysazul.png" alt="Baggy S Azul">
-            <h3>Baggy S Azul</h3>
-            <p class="precio">$16.50</p>
-            <div class="selector-talla">
-                <label for="talla-sazul">Talla:</label>
-                <select id="talla-sazul" onchange="actualizarWhatsApp('talla-sazul', 'btn-sazul', 'Baggy S Azul')">
-                    <option value="32">32</option>
-                </select>
-            </div>
-            <a href="#" id="btn-sazul" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO 7: Baggy Negro -->
-        <div class="producto">
-            <img src="/baggynegro.png" alt="Baggy Negro">
-            <h3>Baggy Negro</h3>
-            <p class="precio">$16.50</p>
-            <div class="selector-talla">
-                <label for="talla-negro">Talla:</label>
-                <select id="talla-negro" onchange="actualizarWhatsApp('talla-negro', 'btn-negro', 'Baggy Negro')">
-                    <option value="28">28</option>
-                    <option value="32">32</option>
-                    <option value="34">34</option>
-                    <option value="36">36</option>
-                </select>
-            </div>
-            <a href="#" id="btn-negro" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO 8: Baggy Gris -->
-        <div class="producto">
-            <img src="/baggygris.png" alt="Baggy Gris">
-            <h3>Baggy Gris</h3>
-            <p class="precio">$16.50</p>
-            <div class="selector-talla">
-                <label for="talla-gris">Talla:</label>
-                <select id="talla-gris" onchange="actualizarWhatsApp('talla-gris', 'btn-gris', 'Baggy Gris')">
-                    <option value="28">28</option>
-                    <option value="34">34</option>
-                    <option value="36">36</option>
-                </select>
-            </div>
-            <a href="#" id="btn-gris" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO 9: Baggy Claro -->
-        <div class="producto">
-            <img src="/baggyclaro.png" alt="Baggy Claro"> 
-            <h3>Baggy Claro</h3>
-            <p class="precio">$16.50</p>
-            <div class="selector-talla">
-                <label for="talla-claro">Talla:</label>
-                <select id="talla-claro" onchange="actualizarWhatsApp('talla-claro', 'btn-claro', 'Baggy Claro')">
-                    <option value="28">28</option>
-                </select>
-            </div>
-            <a href="#" id="btn-claro" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
     </div>
 
     <!-- SCRIPT DE WHATSAPP INTELIGENTE -->
     <script is:inline>
+        const numeroObsidian = "593962596100"; 
+
+        // Función original para los que tienen selector de talla
         function actualizarWhatsApp(idSelect, idBoton, nombreProducto) {
-            const numeroObsidian = "593962596100"; 
-            
             const select = document.getElementById(idSelect);
             const tallaElegida = select.value;
-            
             const mensajeFinal = "Hola, quiero comprar el pantalón " + nombreProducto + " en talla " + tallaElegida;
-            
+            const enlaceCompleto = "https://wa.me/" + numeroObsidian + "?text=" + encodeURIComponent(mensajeFinal);
+            document.getElementById(idBoton).href = enlaceCompleto;
+        }
+
+        // Nueva función para los que no tienen selector de talla (deja espacio para escribir)
+        function configurarWhatsAppSinTalla(idBoton, nombreProducto) {
+            const mensajeFinal = "Hola, me interesa el " + nombreProducto + ". Quisiera saber la disponibilidad en talla: [ESCRIBE TU TALLA AQUÍ]";
             const enlaceCompleto = "https://wa.me/" + numeroObsidian + "?text=" + encodeURIComponent(mensajeFinal);
             document.getElementById(idBoton).href = enlaceCompleto;
         }
 
         window.onload = function() {
-            actualizarWhatsApp('talla-laser1', 'btn-laser1', 'Baggy Laser');
-            actualizarWhatsApp('talla-rayosclaro', 'btn-rayosclaro', 'Baggy Rayos Claro');
+            // Inicializar productos sin selector (Los nuevos primeros)
+            configurarWhatsAppSinTalla('btn-barrelgris', 'Baggy Barrel Gris');
+            configurarWhatsAppSinTalla('btn-barrelcafe', 'Baggy Barrel Cafe');
+            configurarWhatsAppSinTalla('btn-barrelexclusivo', 'Baggy Barrel Gris Exclusivo');
+            configurarWhatsAppSinTalla('btn-skategris', 'Baggy Skate Gris');
+            configurarWhatsAppSinTalla('btn-skatecamo', 'Baggy Skate Camo');
+            configurarWhatsAppSinTalla('btn-skate', 'Baggy Skate');
+
+            // Inicializar productos con selector
+            actualizarWhatsApp('talla-super', 'btn-super', 'Super Baggy Negro');
             actualizarWhatsApp('talla-rayososcuro', 'btn-rayososcuro', 'Baggy Rayos Oscuro');
             actualizarWhatsApp('talla-premium', 'btn-premium', 'Baggy Premium');
-            actualizarWhatsApp('talla-azul', 'btn-azul', 'Baggy Azul');
-            actualizarWhatsApp('talla-sazul', 'btn-sazul', 'Baggy S Azul');
-            actualizarWhatsApp('talla-negro', 'btn-negro', 'Baggy Negro');
-            actualizarWhatsApp('talla-gris', 'btn-gris', 'Baggy Gris');
-            actualizarWhatsApp('talla-claro', 'btn-claro', 'Baggy Claro');
         };
     </script>
 </body>
