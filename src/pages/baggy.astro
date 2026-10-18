@@ -173,6 +173,17 @@
             <a href="#" id="btn-barrelcafe" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
         </div>
 
+        <!-- PRODUCTO NUEVO: Baggy Barrel Cafe Claro -->
+        <div class="producto">
+            <img src="/cafe.png" alt="Baggy Barrel Cafe Claro">
+            <h3>Baggy Barrel Cafe Claro</h3>
+            <p class="precio">$27.00</p>
+            <div class="selector-talla">
+                <span class="mensaje-talla">Consultar talla por WhatsApp</span>
+            </div>
+            <a href="#" id="btn-barrelcafeclaro" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
         <!-- PRODUCTO 3: Baggy Barrel Gris Exclusivo -->
         <div class="producto">
             <img src="/baggybarrelgris.jpeg" alt="Baggy Barrel Gris Exclusivo">
@@ -182,6 +193,28 @@
                 <span class="mensaje-talla">Consultar talla por WhatsApp</span>
             </div>
             <a href="#" id="btn-barrelexclusivo" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO NUEVO: Baggy Barrel -->
+        <div class="producto">
+            <img src="/36.png" alt="Baggy Barrel">
+            <h3>Baggy Barrel</h3>
+            <p class="precio">$27.00</p>
+            <div class="selector-talla">
+                <span class="mensaje-talla">Consultar talla por WhatsApp</span>
+            </div>
+            <a href="#" id="btn-barrel36" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+        </div>
+
+        <!-- PRODUCTO NUEVO: Baggy Azul -->
+        <div class="producto">
+            <img src="/azul.png" alt="Baggy Azul">
+            <h3>Baggy Azul</h3>
+            <p class="precio">$27.00</p>
+            <div class="selector-talla">
+                <span class="mensaje-talla">Consultar talla por WhatsApp</span>
+            </div>
+            <a href="#" id="btn-baggyazul" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
         </div>
 
         <!-- PRODUCTO 4: Baggy Skate Gris -->
@@ -206,32 +239,7 @@
             <a href="#" id="btn-skatecamo" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
         </div>
 
-        <!-- PRODUCTO 6: Baggy Skate -->
-        <div class="producto">
-            <img src="/baggyskate.jpeg" alt="Baggy Skate">
-            <h3>Baggy Skate</h3>
-            <p class="precio">$27.00</p>
-            <div class="selector-talla">
-                <span class="mensaje-talla">Consultar talla por WhatsApp</span>
-            </div>
-            <a href="#" id="btn-skate" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO 7: Super Baggy Negro -->
-        <div class="producto">
-            <img src="/superbaggy.jpeg" alt="Super Baggy Negro">
-            <h3>Super Baggy Negro</h3>
-            <p class="precio">$27.00</p>
-            <div class="selector-talla">
-                <label for="talla-super">Talla:</label>
-                <select id="talla-super" onchange="actualizarWhatsApp('talla-super', 'btn-super', 'Super Baggy Negro')">
-                    <option value="30 (Última unidad)">30 (Última unidad)</option>
-                </select>
-            </div>
-            <a href="#" id="btn-super" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO 8: Baggy Rayos Oscuro (Anterior) -->
+        <!-- PRODUCTO 6: Baggy Rayos Oscuro (Anterior) -->
         <div class="producto">
             <img src="/laser3.png" alt="Baggy Rayos Oscuro">
             <h3>Baggy Rayos Oscuro</h3>
@@ -245,7 +253,7 @@
             <a href="#" id="btn-rayososcuro" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
         </div>
 
-        <!-- PRODUCTO 9: Baggy Premium (Anterior) -->
+        <!-- PRODUCTO 7: Baggy Premium (Anterior) -->
         <div class="producto">
             <img src="/baggypeluche.png" alt="Baggy Premium">
             <h3>Baggy Premium</h3>
@@ -283,16 +291,19 @@
         }
 
         window.onload = function() {
-            // Inicializar productos sin selector (Los nuevos primeros)
+            // Inicializar productos sin selector
             configurarWhatsAppSinTalla('btn-barrelgris', 'Baggy Barrel Gris');
             configurarWhatsAppSinTalla('btn-barrelcafe', 'Baggy Barrel Cafe');
             configurarWhatsAppSinTalla('btn-barrelexclusivo', 'Baggy Barrel Gris Exclusivo');
             configurarWhatsAppSinTalla('btn-skategris', 'Baggy Skate Gris');
             configurarWhatsAppSinTalla('btn-skatecamo', 'Baggy Skate Camo');
-            configurarWhatsAppSinTalla('btn-skate', 'Baggy Skate');
+            
+            // Nuevos productos sin selector
+            configurarWhatsAppSinTalla('btn-barrelcafeclaro', 'Baggy Barrel Cafe Claro');
+            configurarWhatsAppSinTalla('btn-barrel36', 'Baggy Barrel');
+            configurarWhatsAppSinTalla('btn-baggyazul', 'Baggy Azul');
 
             // Inicializar productos con selector
-            actualizarWhatsApp('talla-super', 'btn-super', 'Super Baggy Negro');
             actualizarWhatsApp('talla-rayososcuro', 'btn-rayososcuro', 'Baggy Rayos Oscuro');
             actualizarWhatsApp('talla-premium', 'btn-premium', 'Baggy Premium');
         };
