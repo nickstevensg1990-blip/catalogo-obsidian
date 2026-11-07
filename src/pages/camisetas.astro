@@ -7,11 +7,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camisetas y Hoodies - OBSIDIAN STORE</title>
+    <title>OBSIDIAN STORE</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -21,450 +21,499 @@
         }
 
         body {
-            font-family: 'Libertinus Serif', serif;
-            background-image: url('/Lily.jpg'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #ffffff;
-            padding: 50px 20px;
-            text-align: center;
+            background-color: #111; 
+            overflow-x: hidden;
+            font-family: sans-serif;
+            margin: 0; 
+            transition: background-color 0.5s ease;
         }
 
         h1 {
-            font-size: 45px;
+            text-align: center;
+            margin-top: 40px;
             margin-bottom: 50px;
-            letter-spacing: 3px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.8); 
+            font-size: 70px; 
+            color: #f7f7f7; 
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            font-family: 'Anton', sans-serif; 
+            text-shadow: 4px 4px 20px rgba(0, 0, 0, 0.9);
+            position: relative; 
+            z-index: 10;
+            transition: opacity 0.4s ease;
         }
 
-        /* --- CUADRÍCULA ESTRICTA DE 50/50 --- */
-        .catalogo-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr)); 
-            gap: 40px;
-            max-width: 1000px; 
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .catalogo-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* --- DISEÑO DE LAS TARJETAS --- */
-        .producto {
-            background-color: #ffffff;
-            color: #050505; 
-            padding: 20px;
-            border-radius: 10px;
-            transition: transform 0.3s ease;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 100%; 
-        }
-
-        .producto:hover {
-            transform: translateY(-5px);
-        }
-
-        .producto > img {
-            width: 100%;
-            height: 350px;
-            object-fit: contain; 
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .producto h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-
-        .producto p.precio {
-            color: #555555;
-            font-size: 18px;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        /* --- SELECTOR DE TALLA --- */
-        .selector-talla {
-            margin-bottom: 20px;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .selector-talla select {
-            padding: 5px 15px;
-            font-size: 16px;
-            border: 2px solid #050505;
-            border-radius: 5px;
-            background-color: #ffffff;
-            color: #050505;
-            font-family: inherit;
-            font-weight: bold;
-            cursor: pointer;
-            margin-left: 10px;
-            outline: none;
-            transition: background 0.3s;
-        }
-
-        .selector-talla select:hover {
-            background-color: #f0f0f0;
-        }
-
-        /* --- BOTÓN DE WHATSAPP --- */
-        .btn-whatsapp {
-            display: inline-block;
-            background-color: #050505;
-            color: #ffffff;
-            padding: 12px 25px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 30px;
-            transition: background 0.3s;
-            width: 100%;
-            margin-top: auto;
-        }
-
-        .btn-whatsapp:hover {
-            background-color: #333333;
-        }
-
-        /* --- ESTILOS DEL CARRUSEL --- */
-        .carrusel {
+        .escenario {
             position: relative;
             width: 100%;
-            height: 350px; 
-            overflow: hidden;
-            border-radius: 5px;
-            margin-bottom: 20px;
+            min-height: 100vh; 
+            display: flex;
+            justify-content: center;
         }
 
-        .carrusel-imagenes {
-            display: flex;
+        .video-fondo {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            transition: transform 0.4s ease-in-out;
+            object-fit: cover;
+            z-index: 0;
+            filter: grayscale(100%);
+            transition: filter 0.5s ease; 
         }
 
-        .carrusel-imagenes img {
+        .overlay-oscuro {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            flex: 0 0 100%; 
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2); 
+            z-index: 1;
+            transition: background-color 0.5s ease;
+        }
+
+        .barra-perchero {
+            position: absolute;
+            top: 15px; 
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(to bottom, #777, #444, #222); 
+            box-shadow: 0 12px 25px rgba(0,0,0,0.5); 
+            z-index: 2; 
+        }
+
+        .contenedor-ropa {
+            position: relative;
+            z-index: 3; 
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; 
+            gap: 0px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+            margin-top: 10px; 
+        }
+
+        .prenda-colgada {
+            position: relative; 
+            width: 280px; 
+            margin: 0 -15px; 
+            height: 480px; 
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease, opacity 0.4s ease;
+            transform-origin: top center; 
+            display: flex;
+            justify-content: center;
+        }
+
+        .prenda-colgada > img {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
             object-fit: contain; 
+            object-position: top center; 
+            filter: drop-shadow(8px 15px 12px rgba(0,0,0,0.35)); 
+            transition: opacity 0.3s ease, visibility 0.3s; 
         }
 
-        .flecha {
+        .etiqueta-nombre {
+            position: absolute;
+            bottom: 20px; 
+            left: 50%;
+            transform: translateX(-50%) translateY(15px); 
+            background-color: #f7f7f7; 
+            color: #111; 
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none; 
+            z-index: 10;
+            border-radius: 4px; 
+        }
+
+        .prenda-colgada .img-perfil { opacity: 1; visibility: visible; }
+        .prenda-colgada .img-frente { opacity: 0; visibility: hidden; }
+
+        body:not(.modo-enfocado) .prenda-colgada:hover {
+            transform: rotate(-4deg) scale(1.05);
+        }
+        body:not(.modo-enfocado) .prenda-colgada:hover .img-perfil { opacity: 0; visibility: hidden; }
+        body:not(.modo-enfocado) .prenda-colgada:hover .img-frente { opacity: 1; visibility: visible; }
+        body:not(.modo-enfocado) .prenda-colgada:hover .etiqueta-nombre {
+            opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+        }
+
+        /* =========================================
+           MODO ENFOQUE (ZOOM AL DAR CLIC)
+           ========================================= */
+        
+        body.modo-enfocado .video-fondo { filter: grayscale(100%) blur(15px); }
+        body.modo-enfocado .overlay-oscuro { background-color: rgba(0, 0, 0, 0.75); }
+        body.modo-enfocado h1 { opacity: 0.15; } 
+        
+        .contenedor-ropa.ropa-enfocada .prenda-colgada:not(.activa) {
+            filter: blur(12px) brightness(0.4);
+            transform: scale(0.85) translateY(-20px);
+            pointer-events: none; 
+        }
+
+        .prenda-colgada.activa {
+            position: fixed !important;
+            top: 50% !important;
+            /* AQUÍ ESTÁ EL CAMBIO: Movido al 28% para pegarlo más a la izquierda */
+            left: 28% !important; 
+            transform: translate(-50%, -50%) scale(1.1) !important; 
+            z-index: 100;
+            margin: 0;
+        }
+        
+        .prenda-colgada.activa .img-perfil { opacity: 0 !important; visibility: hidden !important; }
+        .prenda-colgada.activa .img-frente { opacity: 1 !important; visibility: visible !important; }
+        .prenda-colgada.activa .etiqueta-nombre { opacity: 0; visibility: hidden; }
+
+        /* =========================================
+           PANEL LATERAL Y SCROLL
+           ========================================= */
+        
+        .panel-detalles {
             position: absolute;
             top: 50%;
+            /* Ajustado para la animación inicial */
+            right: -450px; 
             transform: translateY(-50%);
-            background-color: rgba(5, 5, 5, 0.6);
-            color: #ffffff;
-            border: none;
-            padding: 10px 15px;
+            /* Panel más ancho (320px) para que respire el texto */
+            width: 320px;
+            max-height: 75vh; 
+            overflow-y: auto;
+            padding-right: 15px; 
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            text-align: left;
+        }
+
+        .panel-detalles::-webkit-scrollbar { width: 6px; }
+        .panel-detalles::-webkit-scrollbar-thumb { background-color: #555; border-radius: 10px; }
+
+        .prenda-colgada.activa .panel-detalles {
+            opacity: 1;
+            visibility: visible;
+            /* AQUÍ ESTÁ EL CAMBIO: Separado fuertemente del hoodie para evitar cruces */
+            right: -380px; 
+        }
+
+        .precio-etiqueta {
+            font-family: 'Anton', sans-serif;
+            font-size: 38px;
+            color: #fff;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 15px rgba(0,0,0,0.8);
+            margin-bottom: -5px;
+        }
+
+        .selector-calidad {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .btn-calidad {
+            background: transparent;
+            color: #888;
+            border: 1px solid #444;
+            padding: 6px 10px;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             cursor: pointer;
-            font-size: 18px;
-            z-index: 10;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .btn-calidad.activo {
+            background: #f7f7f7;
+            color: #111;
+            border-color: #f7f7f7;
+        }
+
+        .btn-calidad:hover:not(.activo) {
+            color: #fff;
+            border-color: #fff;
+        }
+
+        .desc-etiqueta {
+            font-size: 13px;
+            color: #ddd;
+            line-height: 1.5;
+            text-shadow: 1px 1px 8px rgba(0,0,0,0.9);
+            font-weight: 300;
+        }
+
+        .grupo-colores {
+            display: none; 
+            gap: 12px;
+            margin-top: 5px;
+            flex-wrap: wrap; 
+        }
+
+        .grupo-colores.activo {
+            display: flex; 
+        }
+
+        .color-tag {
+            width: 28px;
+            height: 42px; 
+            border: 2px solid #fff;
+            border-radius: 3px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .color-tag:hover {
+            transform: scale(1.15) translateY(-5px);
+        }
+
+        .color-tag::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5px;
+            height: 5px;
+            background-color: #111;
             border-radius: 50%;
-            transition: background-color 0.3s;
         }
 
-        .flecha:hover {
-            background-color: rgba(5, 5, 5, 1);
+        /* --- GALERÍA DE MODELOS --- */
+        .seccion-modelos {
+            display: none; 
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .flecha-izq {
-            left: 10px;
+        .seccion-modelos.activo {
+            display: flex;
         }
 
-        .flecha-der {
-            right: 10px;
+        .titulo-modelos {
+            font-family: 'Anton', sans-serif;
+            color: #fff;
+            font-size: 18px;
+            letter-spacing: 2px;
+            margin-bottom: -5px;
         }
+
+        .img-modelo {
+            position: relative;
+            width: 100%;
+            height: auto; 
+            border-radius: 4px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            border: 1px solid #222;
+        }
+
     </style>
 </head>
 <body>
 
-    <h1>HOODIES & CAMISETAS</h1>
+    <h1>OBSIDIAN</h1>
 
-    <div class="catalogo-grid">
+    <div class="escenario">
         
-        <!-- PRODUCTO 1: CAMISETA BOXY FIT BÁSICA 320g -->
-        <div class="producto">
-            <div class="carrusel">
-                <button class="flecha flecha-izq" onclick="moverCarrusel(-1, 'track-basica')">&#10094;</button>
+        <video autoplay loop muted playsinline class="video-fondo">
+            <source src="/tren-movimiento.mp4" type="video/mp4">
+        </video>
+        
+        <div class="overlay-oscuro"></div>
+
+        <div class="barra-perchero"></div>
+
+        <div class="contenedor-ropa">
+            
+            <!-- HOODIE MURCIELAGO -->
+            <div class="prenda-colgada">
+                <img src="/hoddie2.png" alt="Hoodie Perfil" class="img-perfil">
+                <img src="/hoodie2-frente.png" alt="Hoodie Frente" class="img-frente">
+                <div class="etiqueta-nombre">HODDIE BOXY FIT MURCIELAGO</div>
                 
-                <div class="carrusel-imagenes" id="track-basica" data-index="0">
-                    <img src="/Llana-blanca.png" alt="Llana Blanca">
-                    <img src="/Llana-gris.png" alt="Llana Gris">
-                    <img src="/Llana-negra.png" alt="Llana Negra">
-                    <img src="/llana-vino.png" alt="Llana Vino">
+                <div class="panel-detalles">
+                    <div class="precio-etiqueta">$22.00</div>
+                    
+                    <div class="selector-calidad">
+                        <button class="btn-calidad activo" data-target="grupo-100">100% ALGODÓN</button>
+                        <button class="btn-calidad" data-target="grupo-65">65% ALGODÓN</button>
+                    </div>
+
+                    <p class="desc-etiqueta">Hoodie Gris boxy fit en corte murciélago 100% algodón.</p>
+                    
+                    <!-- COLORES 100% ALGODON -->
+                    <div class="grupo-colores activo" id="grupo-100">
+                        <div class="color-tag" data-img="/hoodie2-frente.png" data-precio="$22.00" data-desc="Hoodie Gris boxy fit en corte murciélago 100% algodón." style="background-color: #b3b3b3;" title="Gris"></div>
+                        <div class="color-tag" data-img="/hoodie-vino.png" data-precio="$22.00" data-desc="Hoodie Vino boxy fit en corte murciélago 100% algodón." style="background-color: #4a0404;" title="Vino"></div>
+                    </div>
+
+                    <!-- COLORES 65% ALGODON -->
+                    <div class="grupo-colores" id="grupo-65">
+                        <div class="color-tag" data-img="/negra.png" data-precio="$17.00" data-desc="Hoodie Negro boxy fit en corte murciélago 65% algodón." data-lookbook="true" style="background-color: #1a1a1a;" title="Negro"></div>
+                        <div class="color-tag" data-img="/hoodie-rojo.png" data-precio="$17.00" data-desc="Hoodie Rojo boxy fit en corte murciélago 65% algodón." style="background-color: #aa0000;" title="Rojo"></div>
+                        <div class="color-tag" data-img="/hoodie-gris65.png" data-precio="$17.00" data-desc="Hoodie Gris boxy fit en corte murciélago 65% algodón." style="background-color: #8c8c8c;" title="Gris"></div>
+                        <div class="color-tag" data-img="/hoodie-rosado.png" data-precio="$17.00" data-desc="Hoodie Rosado boxy fit en corte murciélago 65% algodón." style="background-color: #eebbce;" title="Rosado"></div>
+                        <div class="color-tag" data-img="/hoodie-crema.png" data-precio="$17.00" data-desc="Hoodie Crema boxy fit en corte murciélago 65% algodón." style="background-color: #f5f5dc;" title="Crema"></div>
+                    </div>
+
+                    <!-- GALERÍA DE MODELOS -->
+                    <div class="seccion-modelos" id="lookbook-murcielago">
+                        <h3 class="titulo-modelos">LOOKBOOK</h3>
+                        <p class="desc-etiqueta" style="margin-top: -10px; font-size: 11px;">Así se ve puesto en nuestros modelos.</p>
+                        <img src="/77.jpeg" alt="Modelo 1" class="img-modelo">
+                        <img src="/66.jpeg" alt="Modelo 2" class="img-modelo">
+                    </div>
+
                 </div>
-
-                <button class="flecha flecha-der" onclick="moverCarrusel(1, 'track-basica')">&#10095;</button>
             </div>
 
-            <h3>Camiseta Boxy fit Basica 320 de gramaje</h3>
-            <p class="precio">$15.00</p>
-            
-            <div class="selector-talla">
-                <label for="talla-basica">Talla:</label>
-                <select id="talla-basica" onchange="actualizarWhatsApp('talla-basica', 'btn-basica', 'Camiseta Boxy fit Basica 320 de gramaje')">
-                    <option value="S">S</option>
-                    <option value="M" selected>M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                </select>
+            <!-- APEX TEE -->
+            <div class="prenda-colgada">
+                <img src="/Camiseta2.png" alt="Camiseta Perfil" class="img-perfil">
+                <img src="/camiseta2-frente.png" alt="Camiseta Frente" class="img-frente">
+                <div class="etiqueta-nombre">APEX TEE BOXY FIT</div>
             </div>
 
-            <a href="#" id="btn-basica" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
+            <div class="prenda-colgada">
+                <img src="/blanca2.png" alt="Camiseta Blanca Perfil" class="img-perfil">
+                <img src="/blanca2-frente.png" alt="Camiseta Blanca Frente" class="img-frente">
+                <div class="etiqueta-nombre">CAMISETA BOXY FIT</div>
+            </div>
+
+            <div class="prenda-colgada">
+                <img src="/slong2.png" alt="Manga Larga Perfil" class="img-perfil">
+                <img src="/slong2-frente.png" alt="Manga Larga Frente" class="img-frente">
+                <div class="etiqueta-nombre">SLONG SLEEVE</div>
+            </div>
+
         </div>
-
-        <!-- PRODUCTO 2: PROMOCIÓN 3x40 -->
-        <div class="producto">
-            <img src="/Promocion.png" alt="Promoción 3x40 Obsidian">
-            <h3>Promo 3 x 40 <br> <span style="font-size: 16px; font-weight: normal;">(3 Camisetas Básicas Algodón Premium 320 de gramaje)</span></h3>
-            <p class="precio">$40.00</p>
-            <a href="https://wa.me/593962596100?text=Hola,%20me%20interesa%20la%20Promo%203x40%20(Camisetas%20Premium).%20Quisiera%20elegir%20los%20colores%20y%20tallas." target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO 3: CAMISETA ESTÁNDAR 240g -->
-        <div class="producto">
-            <img src="/Llana-negra.png" alt="Camiseta Basica Algodon Estandar 240 de gramaje">
-            <h3>Camiseta Basica Algodon Estandar 240 de gramaje</h3>
-            <p class="precio">$13.00</p>
-            
-            <div class="selector-talla">
-                <label for="talla-estandar">Talla:</label>
-                <select id="talla-estandar" onchange="actualizarWhatsApp('talla-estandar', 'btn-estandar', 'Camiseta Basica Algodon Estandar 240 de gramaje')">
-                    <option value="M" selected>M</option>
-                    <option value="L">L</option>
-                </select>
-            </div>
-
-            <a href="#" id="btn-estandar" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO 4: MANGA LARGA PREMIUM -->
-        <div class="producto">
-            <img src="/largab.jpeg" alt="Camiseta Manga Larga Algodon Premium 320 de gramaje">
-            <h3>Camiseta Manga Larga Algodón Premium 320 de gramaje</h3>
-            <p class="precio">$20.00</p>
-            
-            <div class="selector-talla">
-                <label for="talla-largab">Talla:</label>
-                <select id="talla-largab" onchange="actualizarWhatsApp('talla-largab', 'btn-largab', 'Camiseta Manga Larga Algodon Premium 320 de gramaje')">
-                    <option value="M" selected>M</option>
-                    <option value="L">L</option>
-                </select>
-            </div>
-
-            <a href="#" id="btn-largab" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO 5: MANGA LARGA NEGRA PREMIUM -->
-        <div class="producto">
-            <img src="/largan.jpeg" alt="Camiseta Manga Larga Negra Algodon Premium 320 de gramaje">
-            <h3>Camiseta Manga Larga Negra Algodón Premium 320 de gramaje</h3>
-            <p class="precio">$20.00</p>
-            
-            <div class="selector-talla">
-                <label for="talla-largan">Talla:</label>
-                <select id="talla-largan" onchange="actualizarWhatsApp('talla-largan', 'btn-largan', 'Camiseta Manga Larga Negra Algodon Premium 320 de gramaje')">
-                    <option value="M" selected>M</option>
-                    <option value="L">L</option>
-                </select>
-            </div>
-
-            <a href="#" id="btn-largan" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO 6: APEX TEE NEGRA -->
-        <div class="producto">
-            <img src="/apex.jpeg" alt="Camiseta Apex Tee Negra">
-            <h3>Camiseta Apex Tee Negra <br> <span style="font-size: 16px; font-weight: normal;">(Algodón Premium 320 de gramaje)</span></h3>
-            <p class="precio">$17.00</p>
-            
-            <div class="selector-talla">
-                <label for="talla-apex">Talla:</label>
-                <select id="talla-apex" onchange="actualizarWhatsApp('talla-apex', 'btn-apex', 'Camiseta Apex Tee Negra')">
-                    <option value="M" selected>M</option>
-                    <option value="L">L</option>
-                </select>
-            </div>
-
-            <a href="#" id="btn-apex" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO 7: CAMISETA SATORU GOJO -->
-        <div class="producto">
-            <div class="carrusel">
-                <button class="flecha flecha-izq" onclick="moverCarrusel(-1, 'track-gojo')">&#10094;</button>
-                
-                <div class="carrusel-imagenes" id="track-gojo" data-index="0">
-                    <img src="/Satoru-delantero.png" alt="Satoru Gojo Delantero">
-                    <img src="/Satoru-trasero.png" alt="Satoru Gojo Trasero">
-                </div>
-
-                <button class="flecha flecha-der" onclick="moverCarrusel(1, 'track-gojo')">&#10095;</button>
-            </div>
-
-            <h3>Camiseta Boxy fit Satoru Gojo</h3>
-            <p class="precio">$16.00</p>
-            
-            <div class="selector-talla">
-                <label for="talla-gojo">Talla:</label>
-                <select id="talla-gojo" onchange="actualizarWhatsApp('talla-gojo', 'btn-gojo', 'Camiseta Boxy fit Satoru Gojo')">
-                    <option value="S">S</option>
-                    <option value="M" selected>M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                </select>
-            </div>
-
-            <a href="#" id="btn-gojo" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-<!-- PRODUCTO NUEVO 8: FORGOTTEN TALES BOXY FIT -->
-        <div class="producto">
-            <div class="carrusel">
-                <button class="flecha flecha-izq" onclick="moverCarrusel(-1, 'track-ft-boxy')">&#10094;</button>
-                
-                <div class="carrusel-imagenes" id="track-ft-boxy" data-index="0">
-                    <img src="/angel.png" alt="FORGOTTEN TALES boxy fit Principal">
-                    <img src="/c.jpeg" alt="FORGOTTEN TALES boxy fit Foto 2">
-                    <img src="/d.jpeg" alt="FORGOTTEN TALES boxy fit Foto 3">
-                </div>
-
-                <button class="flecha flecha-der" onclick="moverCarrusel(1, 'track-ft-boxy')">&#10095;</button>
-            </div>
-
-            <h3>FORGOTTEN TALES boxy fit</h3>
-            <p class="precio">$20.00</p>
-            
-            <div class="selector-talla">
-                <label for="talla-ft-boxy">Talla:</label>
-                <select id="talla-ft-boxy" onchange="actualizarWhatsApp('talla-ft-boxy', 'btn-ft-boxy', 'FORGOTTEN TALES boxy fit')">
-                    <option value="S">S</option>
-                    <option value="M" selected>M</option>
-                    <option value="L">L</option>
-                </select>
-            </div>
-
-            <a href="#" id="btn-ft-boxy" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-        <!-- PRODUCTO NUEVO 9: FORGOTTEN TALES LONG SLEEVE -->
-        <div class="producto">
-            <div class="carrusel">
-                <button class="flecha flecha-izq" onclick="moverCarrusel(-1, 'track-ft-long')">&#10094;</button>
-                
-                <div class="carrusel-imagenes" id="track-ft-long" data-index="0">
-                    <img src="/angel2.png" alt="FORGOTTEN TALES LONG SLEEVE Principal">
-                    <img src="/e.jpeg" alt="FORGOTTEN TALES LONG SLEEVE Foto 2">
-                </div>
-
-                <button class="flecha flecha-der" onclick="moverCarrusel(1, 'track-ft-long')">&#10095;</button>
-            </div>
-
-            <h3>FORGOTTEN TALES LONG SLEEVE</h3>
-            <p class="precio">$25.00</p>
-            
-            <div class="selector-talla">
-                <label for="talla-ft-long">Talla:</label>
-                <select id="talla-ft-long" onchange="actualizarWhatsApp('talla-ft-long', 'btn-ft-long', 'FORGOTTEN TALES LONG SLEEVE')">
-                    <option value="M" selected>M</option>
-                    <option value="L">L</option>
-                </select>
-            </div>
-
-            <a href="#" id="btn-ft-long" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
-<!-- PRODUCTO NUEVO 10: BLOODLINE BOXY FIT -->
-        <div class="producto">
-            <div class="carrusel">
-                <button class="flecha flecha-izq" onclick="moverCarrusel(-1, 'track-bloodline-carrusel')">&#10094;</button>
-                
-                <div class="carrusel-imagenes" id="track-bloodline-carrusel" data-index="0">
-                    <img src="/pis.png" alt="BLOODLINE BOXY FIT Principal">
-                    <img src="/a.jpeg" alt="BLOODLINE BOXY FIT Frente">
-                    <img src="/b.jpeg" alt="BLOODLINE BOXY FIT Espalda">
-                </div>
-
-                <button class="flecha flecha-der" onclick="moverCarrusel(1, 'track-bloodline-carrusel')">&#10095;</button>
-            </div>
-
-            <h3>BLOODLINE BOXY FIT</h3>
-            <p class="precio">$20.00</p>
-            
-            <div class="selector-talla">
-                <label for="talla-bloodline">Talla:</label>
-                <select id="talla-bloodline" onchange="actualizarWhatsApp('talla-bloodline', 'btn-bloodline', 'BLOODLINE BOXY FIT')">
-                    <option value="S">S</option>
-                    <option value="M" selected>M</option>
-                    <option value="L">L</option>
-                </select>
-            </div>
-
-            <a href="#" id="btn-bloodline" target="_blank" class="btn-whatsapp">Comprar por WhatsApp</a>
-        </div>
-
     </div>
 
-    <!-- SCRIPT -->
-    <script is:inline>
-        function moverCarrusel(direccion, idTrack) {
-            const track = document.getElementById(idTrack);
-            const totalImagenes = track.children.length;
-            
-            let indiceActual = parseInt(track.getAttribute('data-index')) || 0;
-            
-            indiceActual += direccion;
+    <script>
+        const prendas = document.querySelectorAll('.prenda-colgada');
+        const contenedor = document.querySelector('.contenedor-ropa');
+        const body = document.body;
 
-            if (indiceActual >= totalImagenes) {
-                indiceActual = 0;
-            }
-            if (indiceActual < 0) {
-                indiceActual = totalImagenes - 1;
-            }
+        prendas.forEach(prenda => {
+            prenda.addEventListener('click', () => {
+                if (prenda.classList.contains('activa')) {
+                    prenda.classList.remove('activa');
+                    contenedor.classList.remove('ropa-enfocada');
+                    body.classList.remove('modo-enfocado');
+                    
+                    const panel = prenda.querySelector('.panel-detalles');
+                    if (panel) panel.scrollTop = 0;
+                } else {
+                    prendas.forEach(p => {
+                        p.classList.remove('activa');
+                        const pPanel = p.querySelector('.panel-detalles');
+                        if (pPanel) pPanel.scrollTop = 0;
+                    });
+                    prenda.classList.add('activa');
+                    contenedor.classList.add('ropa-enfocada');
+                    body.classList.add('modo-enfocado');
+                }
+            });
+        });
 
-            track.setAttribute('data-index', indiceActual);
+        const botonesCalidad = document.querySelectorAll('.btn-calidad');
+        botonesCalidad.forEach(boton => {
+            boton.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                
+                if(boton.classList.contains('activo')) return;
 
-            const desplazamiento = -(indiceActual * 100);
-            track.style.transform = `translateX(${desplazamiento}%)`;
-        }
+                const panelDetalles = boton.closest('.panel-detalles');
+                
+                const botonesHermanos = panelDetalles.querySelectorAll('.btn-calidad');
+                botonesHermanos.forEach(b => b.classList.remove('activo'));
+                boton.classList.add('activo');
 
-        function actualizarWhatsApp(idSelect, idBoton, nombreProducto) {
-            const numeroObsidian = "593962596100"; 
-            
-            const select = document.getElementById(idSelect);
-            const tallaElegida = select.value;
-            
-            const mensajeFinal = "Hola, quiero comprar la " + nombreProducto + " en talla " + tallaElegida;
-            
-            const enlaceCompleto = "https://wa.me/" + numeroObsidian + "?text=" + encodeURIComponent(mensajeFinal);
-            document.getElementById(idBoton).href = enlaceCompleto;
-        }
+                const gruposColores = panelDetalles.querySelectorAll('.grupo-colores');
+                gruposColores.forEach(grupo => grupo.classList.remove('activo'));
 
-        window.onload = function() {
-            actualizarWhatsApp('talla-basica', 'btn-basica', 'Camiseta Boxy fit Basica 320 de gramaje');
-            actualizarWhatsApp('talla-estandar', 'btn-estandar', 'Camiseta Basica Algodon Estandar 240 de gramaje');
-            actualizarWhatsApp('talla-largab', 'btn-largab', 'Camiseta Manga Larga Algodon Premium 320 de gramaje');
-            actualizarWhatsApp('talla-largan', 'btn-largan', 'Camiseta Manga Larga Negra Algodon Premium 320 de gramaje');
-            actualizarWhatsApp('talla-apex', 'btn-apex', 'Camiseta Apex Tee Negra');
-            actualizarWhatsApp('talla-gojo', 'btn-gojo', 'Camiseta Boxy fit Satoru Gojo');
-            
-            // Inicialización de los nuevos productos
-            actualizarWhatsApp('talla-ft-boxy', 'btn-ft-boxy', 'FORGOTTEN TALES boxy fit');
-            actualizarWhatsApp('talla-ft-long', 'btn-ft-long', 'FORGOTTEN TALES LONG SLEEVE');
-            actualizarWhatsApp('talla-bloodline', 'btn-bloodline', 'BLOODLINE BOXY FIT');
-        };
+                const targetId = boton.getAttribute('data-target');
+                const grupoObjetivo = panelDetalles.querySelector(`#${targetId}`);
+                if(grupoObjetivo) {
+                    grupoObjetivo.classList.add('activo');
+                    
+                    const primerColor = grupoObjetivo.querySelector('.color-tag');
+                    if(primerColor) {
+                        primerColor.click();
+                    }
+                }
+            });
+        });
+
+        const colores = document.querySelectorAll('.color-tag');
+        colores.forEach(tag => {
+            tag.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                
+                const nuevaImg = tag.getAttribute('data-img');
+                const nuevaDesc = tag.getAttribute('data-desc');
+                const nuevoPrecio = tag.getAttribute('data-precio');
+                const mostrarLookbook = tag.getAttribute('data-lookbook'); 
+                
+                const prendaPadre = tag.closest('.prenda-colgada');
+                const panelDetalles = prendaPadre.querySelector('.panel-detalles');
+                
+                prendaPadre.querySelector('.img-frente').src = nuevaImg;
+                
+                const textoDescripcion = prendaPadre.querySelector('.desc-etiqueta');
+                if (textoDescripcion && nuevaDesc) {
+                    textoDescripcion.innerText = nuevaDesc;
+                }
+
+                const textoPrecio = prendaPadre.querySelector('.precio-etiqueta');
+                if (textoPrecio && nuevoPrecio) {
+                    textoPrecio.innerText = nuevoPrecio;
+                }
+                
+                const seccionModelos = prendaPadre.querySelector('.seccion-modelos');
+                if (seccionModelos) {
+                    if (mostrarLookbook === 'true') {
+                        seccionModelos.classList.add('activo');
+                    } else {
+                        seccionModelos.classList.remove('activo');
+                    }
+                }
+                
+                if (panelDetalles) {
+                    panelDetalles.scrollTop = 0;
+                }
+            });
+        });
     </script>
+
 </body>
 </html>
