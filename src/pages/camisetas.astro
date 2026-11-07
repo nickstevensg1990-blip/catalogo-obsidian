@@ -173,7 +173,6 @@
         .prenda-colgada.activa {
             position: fixed !important;
             top: 50% !important;
-            /* AQUÍ ESTÁ EL CAMBIO: Movido al 28% para pegarlo más a la izquierda */
             left: 28% !important; 
             transform: translate(-50%, -50%) scale(1.1) !important; 
             z-index: 100;
@@ -191,10 +190,8 @@
         .panel-detalles {
             position: absolute;
             top: 50%;
-            /* Ajustado para la animación inicial */
             right: -450px; 
             transform: translateY(-50%);
-            /* Panel más ancho (320px) para que respire el texto */
             width: 320px;
             max-height: 75vh; 
             overflow-y: auto;
@@ -214,7 +211,6 @@
         .prenda-colgada.activa .panel-detalles {
             opacity: 1;
             visibility: visible;
-            /* AQUÍ ESTÁ EL CAMBIO: Separado fuertemente del hoodie para evitar cruces */
             right: -380px; 
         }
 
@@ -336,6 +332,40 @@
             border: 1px solid #222;
         }
 
+        /* =========================================
+           RESPONSIVE (MÓVILES Y PANTALLAS PEQUEÑAS)
+           ========================================= */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 40px;
+                margin-top: 20px;
+                margin-bottom: 30px;
+            }
+
+            .prenda-colgada.activa {
+                left: 50% !important;
+                top: 35% !important; 
+                transform: translate(-50%, -50%) scale(0.85) !important; 
+            }
+
+            .panel-detalles, .prenda-colgada.activa .panel-detalles {
+                top: 100%;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%); 
+                width: 90vw; 
+                max-width: 320px;
+                padding-right: 0;
+                padding-top: 30px; 
+                max-height: 55vh; 
+                text-align: center; 
+                align-items: center; 
+            }
+
+            .selector-calidad, .grupo-colores {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
