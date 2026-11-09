@@ -173,7 +173,7 @@
         .prenda-colgada.activa {
             position: fixed !important;
             top: 50% !important;
-            left: 28% !important; 
+            left: 24% !important; 
             transform: translate(-50%, -50%) scale(1.1) !important; 
             z-index: 100;
             margin: 0;
@@ -184,21 +184,23 @@
         .prenda-colgada.activa .etiqueta-nombre { opacity: 0; visibility: hidden; }
 
         /* =========================================
-           PANEL LATERAL Y SCROLL
+           PANEL LATERAL (2 COLUMNAS)
            ========================================= */
         
         .panel-detalles {
             position: absolute;
             top: 50%;
-            right: -450px; 
-            transform: translateY(-50%);
-            width: 320px;
+            left: 110%; 
+            transform: translateY(-50%) translateX(40px); 
+            width: max-content; 
+            max-width: 750px;
             max-height: 75vh; 
             overflow-y: auto;
             padding-right: 15px; 
             display: flex;
-            flex-direction: column;
-            gap: 12px;
+            flex-direction: row; 
+            align-items: flex-start;
+            gap: 40px; 
             opacity: 0;
             visibility: hidden;
             transition: all 0.4s ease;
@@ -211,7 +213,15 @@
         .prenda-colgada.activa .panel-detalles {
             opacity: 1;
             visibility: visible;
-            right: -380px; 
+            transform: translateY(-50%) translateX(0); 
+        }
+
+        /* Columna 1: Info Principal */
+        .info-principal {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .precio-etiqueta {
@@ -225,33 +235,38 @@
 
         .selector-calidad {
             display: flex;
-            gap: 8px;
-            margin-bottom: 5px;
+            flex-wrap: wrap; 
+            gap: 10px; 
+            margin-bottom: 15px; 
         }
 
         .btn-calidad {
-            background: transparent;
-            color: #888;
-            border: 1px solid #444;
-            padding: 6px 10px;
-            font-size: 10px;
+            background: rgba(255, 255, 255, 0.05); 
+            color: #ccc; 
+            border: 1px solid #666; 
+            padding: 8px 14px; 
+            font-size: 13px; 
             font-weight: bold;
             letter-spacing: 1px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 4px;
         }
 
         .btn-calidad.activo {
             background: #f7f7f7;
             color: #111;
             border-color: #f7f7f7;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6); 
+            transform: scale(1.05); 
         }
 
         .btn-calidad:hover:not(.activo) {
             color: #fff;
             border-color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px); 
         }
 
         .desc-etiqueta {
@@ -300,14 +315,15 @@
             border-radius: 50%;
         }
 
-        /* --- GALERÍA DE MODELOS --- */
+        /* Columna 2: GALERÍA DE MODELOS */
         .seccion-modelos {
             display: none; 
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #333;
+            width: 280px; 
+            border-left: 1px solid #333; 
+            padding-left: 30px; 
             flex-direction: column;
             gap: 15px;
+            animation: fadeInRight 0.4s ease forwards; 
         }
 
         .seccion-modelos.activo {
@@ -332,10 +348,15 @@
             border: 1px solid #222;
         }
 
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         /* =========================================
            RESPONSIVE (MÓVILES Y PANTALLAS PEQUEÑAS)
            ========================================= */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             h1 {
                 font-size: 40px;
                 margin-top: 20px;
@@ -344,7 +365,7 @@
 
             .prenda-colgada.activa {
                 left: 50% !important;
-                top: 35% !important; 
+                top: 30% !important; 
                 transform: translate(-50%, -50%) scale(0.85) !important; 
             }
 
@@ -355,11 +376,25 @@
                 transform: translateX(-50%); 
                 width: 90vw; 
                 max-width: 320px;
+                flex-direction: column; 
+                gap: 20px;
                 padding-right: 0;
-                padding-top: 30px; 
-                max-height: 55vh; 
-                text-align: center; 
-                align-items: center; 
+                padding-top: 20px; 
+                max-height: 60vh; 
+            }
+
+            .info-principal {
+                width: 100%;
+                align-items: center;
+                text-align: center;
+            }
+
+            .seccion-modelos {
+                width: 100%;
+                border-left: none; 
+                border-top: 1px solid #333; 
+                padding-left: 0;
+                padding-top: 20px;
             }
 
             .selector-calidad, .grupo-colores {
@@ -391,36 +426,50 @@
                 <div class="etiqueta-nombre">HODDIE BOXY FIT MURCIELAGO</div>
                 
                 <div class="panel-detalles">
-                    <div class="precio-etiqueta">$22.00</div>
                     
-                    <div class="selector-calidad">
-                        <button class="btn-calidad activo" data-target="grupo-100">100% ALGODÓN</button>
-                        <button class="btn-calidad" data-target="grupo-65">65% ALGODÓN</button>
+                    <!-- COLUMNA 1: Detalles y Selectores -->
+                    <div class="info-principal">
+                        <div class="precio-etiqueta">$22.00</div>
+                        
+                        <div class="selector-calidad">
+                            <button class="btn-calidad activo" data-target="grupo-100">HOODIE 100%</button>
+                            <button class="btn-calidad" data-target="grupo-65">HOODIE 65%</button>
+                            <button class="btn-calidad" data-target="grupo-zip-65">ZIP HOODIE 65%</button>
+                        </div>
+
+                        <p class="desc-etiqueta">Hoodie Gris boxy fit en corte murciélago 100% algodón.</p>
+                        
+                        <!-- COLORES 100% ALGODON -->
+                        <div class="grupo-colores activo" id="grupo-100">
+                            <div class="color-tag" data-img="/hoodie2-frente.png" data-precio="$22.00" data-desc="Hoodie Gris boxy fit en corte murciélago 100% algodón." style="background-color: #b3b3b3;" title="Gris"></div>
+                            <div class="color-tag" data-img="/hoodie-vino.png" data-precio="$22.00" data-desc="Hoodie Vino boxy fit en corte murciélago 100% algodón." style="background-color: #4a0404;" title="Vino"></div>
+                        </div>
+
+                        <!-- COLORES 65% ALGODON -->
+                        <div class="grupo-colores" id="grupo-65">
+                            <div class="color-tag" data-img="/negra.png" data-lookbook-imgs="/77.jpeg,/66.jpeg" data-precio="$17.00" data-desc="Hoodie Negro boxy fit en corte murciélago 65% algodón." style="background-color: #1a1a1a;" title="Negro"></div>
+                            <div class="color-tag" data-img="/hoodie-rojo.png" data-precio="$17.00" data-desc="Hoodie Rojo boxy fit en corte murciélago 65% algodón." style="background-color: #aa0000;" title="Rojo"></div>
+                            <div class="color-tag" data-img="/hoodie-gris65.png" data-precio="$17.00" data-desc="Hoodie Gris boxy fit en corte murciélago 65% algodón." style="background-color: #8c8c8c;" title="Gris"></div>
+                            <div class="color-tag" data-img="/hoodie-rosado.png" data-precio="$17.00" data-desc="Hoodie Rosado boxy fit en corte murciélago 65% algodón." style="background-color: #eebbce;" title="Rosado"></div>
+                            <div class="color-tag" data-img="/hoodie-crema.png" data-precio="$17.00" data-desc="Hoodie Crema boxy fit en corte murciélago 65% algodón." style="background-color: #f5f5dc;" title="Crema"></div>
+                        </div>
+
+                        <!-- GRUPO: ZIP HOODIE 65% ALGODON -->
+                        <div class="grupo-colores" id="grupo-zip-65">
+                            <div class="color-tag" data-img="/zip-negra.png" data-lookbook-imgs="/negra1.jpeg,/negra2.jpeg,/negra3.jpeg" data-precio="$20.00" data-desc="Zip Hoodie Negro boxy fit con cierre 65% algodón." style="background-color: #1a1a1a;" title="Negro"></div>
+                            <div class="color-tag" data-img="/zip-rojo.png" data-lookbook-imgs="/roja1.jpeg,/roja2.jpeg" data-precio="$20.00" data-desc="Zip Hoodie Rojo boxy fit con cierre 65% algodón." style="background-color: #aa0000;" title="Rojo"></div>
+                            <div class="color-tag" data-img="/zip-gris.png" data-lookbook-imgs="/gris1.jpeg,/gris2.jpeg,/gris3.jpeg" data-precio="$20.00" data-desc="Zip Hoodie Gris boxy fit con cierre 65% algodón." style="background-color: #8c8c8c;" title="Gris"></div>
+                            <div class="color-tag" data-img="/zip-rosa.png" data-lookbook-imgs="/rosa1.jpeg,/rosa2.jpeg" data-precio="$20.00" data-desc="Zip Hoodie Rosado boxy fit con cierre 65% algodón." style="background-color: #eebbce;" title="Rosado"></div>
+                            <!-- AQUI ESTÁ LA CORRECCIÓN: ahora apunta a negra1.jpeg y negra3.jpeg -->
+                            <div class="color-tag" data-img="/zip-crema.png" data-lookbook-imgs="/negra1.jpeg,/negra3.jpeg" data-precio="$20.00" data-desc="Zip Hoodie Crema boxy fit con cierre 65% algodón." style="background-color: #f5f5dc;" title="Crema"></div>
+                        </div>
                     </div>
 
-                    <p class="desc-etiqueta">Hoodie Gris boxy fit en corte murciélago 100% algodón.</p>
-                    
-                    <!-- COLORES 100% ALGODON -->
-                    <div class="grupo-colores activo" id="grupo-100">
-                        <div class="color-tag" data-img="/hoodie2-frente.png" data-precio="$22.00" data-desc="Hoodie Gris boxy fit en corte murciélago 100% algodón." style="background-color: #b3b3b3;" title="Gris"></div>
-                        <div class="color-tag" data-img="/hoodie-vino.png" data-precio="$22.00" data-desc="Hoodie Vino boxy fit en corte murciélago 100% algodón." style="background-color: #4a0404;" title="Vino"></div>
-                    </div>
-
-                    <!-- COLORES 65% ALGODON -->
-                    <div class="grupo-colores" id="grupo-65">
-                        <div class="color-tag" data-img="/negra.png" data-precio="$17.00" data-desc="Hoodie Negro boxy fit en corte murciélago 65% algodón." data-lookbook="true" style="background-color: #1a1a1a;" title="Negro"></div>
-                        <div class="color-tag" data-img="/hoodie-rojo.png" data-precio="$17.00" data-desc="Hoodie Rojo boxy fit en corte murciélago 65% algodón." style="background-color: #aa0000;" title="Rojo"></div>
-                        <div class="color-tag" data-img="/hoodie-gris65.png" data-precio="$17.00" data-desc="Hoodie Gris boxy fit en corte murciélago 65% algodón." style="background-color: #8c8c8c;" title="Gris"></div>
-                        <div class="color-tag" data-img="/hoodie-rosado.png" data-precio="$17.00" data-desc="Hoodie Rosado boxy fit en corte murciélago 65% algodón." style="background-color: #eebbce;" title="Rosado"></div>
-                        <div class="color-tag" data-img="/hoodie-crema.png" data-precio="$17.00" data-desc="Hoodie Crema boxy fit en corte murciélago 65% algodón." style="background-color: #f5f5dc;" title="Crema"></div>
-                    </div>
-
-                    <!-- GALERÍA DE MODELOS -->
+                    <!-- COLUMNA 2: GALERÍA DE MODELOS -->
                     <div class="seccion-modelos" id="lookbook-murcielago">
                         <h3 class="titulo-modelos">LOOKBOOK</h3>
                         <p class="desc-etiqueta" style="margin-top: -10px; font-size: 11px;">Así se ve puesto en nuestros modelos.</p>
-                        <img src="/77.jpeg" alt="Modelo 1" class="img-modelo">
-                        <img src="/66.jpeg" alt="Modelo 2" class="img-modelo">
+                        <!-- Las imágenes ahora se inyectan dinámicamente con JavaScript -->
                     </div>
 
                 </div>
@@ -512,7 +561,7 @@
                 const nuevaImg = tag.getAttribute('data-img');
                 const nuevaDesc = tag.getAttribute('data-desc');
                 const nuevoPrecio = tag.getAttribute('data-precio');
-                const mostrarLookbook = tag.getAttribute('data-lookbook'); 
+                const lookbookImgsRaw = tag.getAttribute('data-lookbook-imgs'); 
                 
                 const prendaPadre = tag.closest('.prenda-colgada');
                 const panelDetalles = prendaPadre.querySelector('.panel-detalles');
@@ -531,8 +580,20 @@
                 
                 const seccionModelos = prendaPadre.querySelector('.seccion-modelos');
                 if (seccionModelos) {
-                    if (mostrarLookbook === 'true') {
+                    const imgsAnteriores = seccionModelos.querySelectorAll('.img-modelo');
+                    imgsAnteriores.forEach(img => img.remove());
+
+                    if (lookbookImgsRaw) {
                         seccionModelos.classList.add('activo');
+                        const imgsArray = lookbookImgsRaw.split(',');
+                        
+                        imgsArray.forEach(src => {
+                            const nuevaImagen = document.createElement('img');
+                            nuevaImagen.src = src.trim();
+                            nuevaImagen.alt = "Modelo Lookbook";
+                            nuevaImagen.className = "img-modelo";
+                            seccionModelos.appendChild(nuevaImagen);
+                        });
                     } else {
                         seccionModelos.classList.remove('activo');
                     }
