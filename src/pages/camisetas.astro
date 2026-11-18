@@ -1,610 +1,447 @@
 ---
 // Lógica de servidor de Astro
 ---
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OBSIDIAN STORE</title>
+    <title>OBSIDIAN STORE - LOOKS</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     
+    <!-- Librería CSS de Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
-            background-color: #111; 
-            overflow-x: hidden;
+            background-color: #000000; 
             font-family: sans-serif;
-            margin: 0; 
-            transition: background-color 0.5s ease;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 40px;
-            margin-bottom: 50px;
-            font-size: 70px; 
+            overflow: hidden; 
             color: #f7f7f7; 
-            letter-spacing: 10px;
-            text-transform: uppercase;
-            font-family: 'Anton', sans-serif; 
-            text-shadow: 4px 4px 20px rgba(0, 0, 0, 0.9);
-            position: relative; 
-            z-index: 10;
-            transition: opacity 0.4s ease;
-        }
-
-        .escenario {
-            position: relative;
-            width: 100%;
-            min-height: 100vh; 
-            display: flex;
-            justify-content: center;
         }
 
         .video-fondo {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             object-fit: cover;
-            z-index: 0;
-            filter: grayscale(100%);
-            transition: filter 0.5s ease; 
+            z-index: 0; 
         }
 
-        .overlay-oscuro {
-            position: absolute;
+        .overlay {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.2); 
-            z-index: 1;
-            transition: background-color 0.5s ease;
+            background-color: rgba(0, 0, 0, 0.4); 
+            z-index: 1; 
         }
 
-        .barra-perchero {
-            position: absolute;
-            top: 15px; 
-            left: 0;
-            width: 100%;
-            height: 12px;
-            background: linear-gradient(to bottom, #777, #444, #222); 
-            box-shadow: 0 12px 25px rgba(0,0,0,0.5); 
-            z-index: 2; 
-        }
-
-        .contenedor-ropa {
-            position: relative;
-            z-index: 3; 
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; 
-            gap: 0px;
-            width: 100%;
-            max-width: 1200px;
-            padding: 0 20px;
-            margin-top: 10px; 
-        }
-
-        .prenda-colgada {
+        .escaparate {
             position: relative; 
-            width: 280px; 
-            margin: 0 -15px; 
-            height: 480px; 
-            cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease, opacity 0.4s ease;
-            transform-origin: top center; 
+            z-index: 10; 
+            display: flex;
+            align-items: center; 
+            justify-content: space-between; 
+            height: 100vh; 
+            width: 100%;
+            max-width: 1700px; 
+            margin: 0 auto;
+            padding: 0 50px; 
+            gap: 40px;
+        }
+
+        /* ================================
+           ZONA IZQUIERDA: CARRUSEL
+           ================================ */
+        .swiper {
+            width: 75%; 
+            height: 85vh; 
+            padding: 0; 
+        }
+        
+        .swiper-slide {
+            width: 500px; 
+            height: 100%; 
             display: flex;
             justify-content: center;
+            align-items: flex-end; 
+            
+            opacity: 1 !important; 
+            transform: scale(0.75); 
+            transform-origin: bottom center; 
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease; 
+        }
+        
+        .swiper-slide-active {
+            transform: scale(1); 
+            z-index: 10; 
         }
 
-        .prenda-colgada > img {
-            position: absolute; 
-            top: 0;
-            left: 0;
+        body.modo-colores .swiper-slide:not(.swiper-slide-active) {
+            opacity: 0 !important;
+            pointer-events: none;
+        }
+        
+        .swiper-slide img {
+            display: block;
             width: 100%;
             height: 100%;
-            object-fit: contain; 
-            object-position: top center; 
-            filter: drop-shadow(8px 15px 12px rgba(0,0,0,0.35)); 
-            transition: opacity 0.3s ease, visibility 0.3s; 
+            object-fit: contain;
+            object-position: bottom; 
+            filter: drop-shadow(0px 25px 20px rgba(0,0,0,0.8));
+            transition: opacity 0.3s ease; 
         }
 
-        .etiqueta-nombre {
-            position: absolute;
-            bottom: 20px; 
-            left: 50%;
-            transform: translateX(-50%) translateY(15px); 
-            background-color: #f7f7f7; 
-            color: #111; 
-            padding: 8px 16px;
+        /* ================================
+           ZONA DERECHA: PANEL DE COMPRA
+           ================================ */
+        .panel-lateral {
+            width: 25%; 
+            max-width: 350px;
+            flex-shrink: 0; 
+            background: rgba(15, 15, 15, 0.6); 
+            backdrop-filter: blur(8px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            padding: 30px; 
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
+        }
+
+        .vista-principal { display: flex; flex-direction: column; gap: 12px; }
+        .vista-colores { display: none; flex-direction: column; gap: 12px; }
+        
+        body.modo-colores .vista-principal { display: none; }
+        body.modo-colores .vista-colores { display: flex; }
+        
+        .panel-encabezado { margin-bottom: 0px; }
+
+        .etiqueta-in-look {
             font-size: 12px;
-            font-weight: bold;
+            color: #aaa; 
             letter-spacing: 2px;
             text-transform: uppercase;
-            white-space: nowrap; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            pointer-events: none; 
-            z-index: 10;
-            border-radius: 4px; 
+            margin-bottom: 5px;
+            display: block;
         }
 
-        .prenda-colgada .img-perfil { opacity: 1; visibility: visible; }
-        .prenda-colgada .img-frente { opacity: 0; visibility: hidden; }
-
-        body:not(.modo-enfocado) .prenda-colgada:hover {
-            transform: rotate(-4deg) scale(1.05);
-        }
-        body:not(.modo-enfocado) .prenda-colgada:hover .img-perfil { opacity: 0; visibility: hidden; }
-        body:not(.modo-enfocado) .prenda-colgada:hover .img-frente { opacity: 1; visibility: visible; }
-        body:not(.modo-enfocado) .prenda-colgada:hover .etiqueta-nombre {
-            opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
-        }
-
-        /* =========================================
-           MODO ENFOQUE (ZOOM AL DAR CLIC)
-           ========================================= */
-        
-        body.modo-enfocado .video-fondo { filter: grayscale(100%) blur(15px); }
-        body.modo-enfocado .overlay-oscuro { background-color: rgba(0, 0, 0, 0.75); }
-        body.modo-enfocado h1 { opacity: 0.15; } 
-        
-        .contenedor-ropa.ropa-enfocada .prenda-colgada:not(.activa) {
-            filter: blur(12px) brightness(0.4);
-            transform: scale(0.85) translateY(-20px);
-            pointer-events: none; 
-        }
-
-        .prenda-colgada.activa {
-            position: fixed !important;
-            top: 50% !important;
-            left: 24% !important; 
-            transform: translate(-50%, -50%) scale(1.1) !important; 
-            z-index: 100;
-            margin: 0;
-        }
-        
-        .prenda-colgada.activa .img-perfil { opacity: 0 !important; visibility: hidden !important; }
-        .prenda-colgada.activa .img-frente { opacity: 1 !important; visibility: visible !important; }
-        .prenda-colgada.activa .etiqueta-nombre { opacity: 0; visibility: hidden; }
-
-        /* =========================================
-           PANEL LATERAL (2 COLUMNAS)
-           ========================================= */
-        
-        .panel-detalles {
-            position: absolute;
-            top: 50%;
-            left: 110%; 
-            transform: translateY(-50%) translateX(40px); 
-            width: max-content; 
-            max-width: 750px;
-            max-height: 75vh; 
-            overflow-y: auto;
-            padding-right: 15px; 
-            display: flex;
-            flex-direction: row; 
-            align-items: flex-start;
-            gap: 40px; 
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
-            text-align: left;
-        }
-
-        .panel-detalles::-webkit-scrollbar { width: 6px; }
-        .panel-detalles::-webkit-scrollbar-thumb { background-color: #555; border-radius: 10px; }
-
-        .prenda-colgada.activa .panel-detalles {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(-50%) translateX(0); 
-        }
-
-        /* Columna 1: Info Principal */
-        .info-principal {
-            width: 320px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .precio-etiqueta {
+        .nombre-outfit {
             font-family: 'Anton', sans-serif;
-            font-size: 38px;
-            color: #fff;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 15px rgba(0,0,0,0.8);
-            margin-bottom: -5px;
-        }
-
-        .selector-calidad {
-            display: flex;
-            flex-wrap: wrap; 
-            gap: 10px; 
-            margin-bottom: 15px; 
-        }
-
-        .btn-calidad {
-            background: rgba(255, 255, 255, 0.05); 
-            color: #ccc; 
-            border: 1px solid #666; 
-            padding: 8px 14px; 
-            font-size: 13px; 
-            font-weight: bold;
+            font-size: 28px; 
+            color: #fff; 
             letter-spacing: 1px;
             text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border-radius: 4px;
+            margin-bottom: 2px;
+            line-height: 1.1;
+        }
+        
+        .precio-outfit {
+            font-size: 24px;
+            font-family: 'Anton', sans-serif;
+            color: #f7f7f7; 
+            letter-spacing: 1px;
         }
 
-        .btn-calidad.activo {
-            background: #f7f7f7;
-            color: #111;
-            border-color: #f7f7f7;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6); 
-            transform: scale(1.05); 
+        /* ================================
+           CAJA DEL MOCKUP (FONDO BLANCO FORZADO)
+           ================================ */
+        .contenedor-mockup {
+            width: 100%;
+            height: 180px; 
+            /* AQUÍ FORZAMOS EL BLANCO ABSOLUTO IGNORANDO OTRAS REGLAS */
+            background-color: #ffffff !important; 
+            border-radius: 8px;
+            padding: 15px;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+            overflow: hidden; 
         }
-
-        .btn-calidad:hover:not(.activo) {
-            color: #fff;
-            border-color: #fff;
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px); 
+        
+        .contenedor-mockup img {
+            width: 100%;
+            height: 100%; 
+            object-fit: contain; 
+            filter: drop-shadow(0px 5px 8px rgba(0,0,0,0.3));
+            transition: opacity 0.2s ease;
         }
-
-        .desc-etiqueta {
-            font-size: 13px;
-            color: #ddd;
+        
+        .desc-outfit {
+            font-size: 15px;
+            color: #ddd; 
             line-height: 1.5;
-            text-shadow: 1px 1px 8px rgba(0,0,0,0.9);
             font-weight: 300;
         }
 
-        .grupo-colores {
-            display: none; 
-            gap: 12px;
-            margin-top: 5px;
-            flex-wrap: wrap; 
-        }
-
-        .grupo-colores.activo {
-            display: flex; 
-        }
-
-        .color-tag {
-            width: 28px;
-            height: 42px; 
-            border: 2px solid #fff;
-            border-radius: 3px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.2s;
-        }
-
-        .color-tag:hover {
-            transform: scale(1.15) translateY(-5px);
-        }
-
-        .color-tag::before {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 5px;
-            height: 5px;
-            background-color: #111;
-            border-radius: 50%;
-        }
-
-        /* Columna 2: GALERÍA DE MODELOS */
-        .seccion-modelos {
-            display: none; 
-            width: 280px; 
-            border-left: 1px solid #333; 
-            padding-left: 30px; 
-            flex-direction: column;
-            gap: 15px;
-            animation: fadeInRight 0.4s ease forwards; 
-        }
-
-        .seccion-modelos.activo {
-            display: flex;
-        }
-
-        .titulo-modelos {
+        /* ================================
+           BOTONES Y SELECTOR
+           ================================ */
+        .btn-comprar {
+            margin-top: 10px;
+            background: #f7f7f7; 
+            color: #111; 
+            border: none;
+            padding: 16px;
             font-family: 'Anton', sans-serif;
-            color: #fff;
             font-size: 18px;
-            letter-spacing: 2px;
-            margin-bottom: -5px;
-        }
-
-        .img-modelo {
-            position: relative;
-            width: 100%;
-            height: auto; 
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             border-radius: 4px;
-            object-fit: cover;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
-            border: 1px solid #222;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-comprar:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2); }
+
+        .btn-secundario {
+            background: rgba(0, 0, 0, 0.5); 
+            color: #f7f7f7; 
+            border: 1px solid #555;
+            padding: 14px;
+            font-family: 'Anton', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-secundario:hover { background: #333; border-color: #f7f7f7; }
+
+        .selector-colores {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 10px 0;
+            flex-wrap: wrap;
         }
 
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
+        .color-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #444;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .color-btn:hover, .color-btn.activo {
+            transform: scale(1.2);
+            border-color: #111; 
         }
 
-        /* =========================================
-           RESPONSIVE (MÓVILES Y PANTALLAS PEQUEÑAS)
-           ========================================= */
+        /* ================================
+           MÓVILES
+           ================================ */
         @media (max-width: 900px) {
-            h1 {
-                font-size: 40px;
-                margin-top: 20px;
-                margin-bottom: 30px;
-            }
-
-            .prenda-colgada.activa {
-                left: 50% !important;
-                top: 30% !important; 
-                transform: translate(-50%, -50%) scale(0.85) !important; 
-            }
-
-            .panel-detalles, .prenda-colgada.activa .panel-detalles {
-                top: 100%;
-                left: 50%;
-                right: auto;
-                transform: translateX(-50%); 
-                width: 90vw; 
-                max-width: 320px;
-                flex-direction: column; 
-                gap: 20px;
-                padding-right: 0;
-                padding-top: 20px; 
-                max-height: 60vh; 
-            }
-
-            .info-principal {
-                width: 100%;
-                align-items: center;
-                text-align: center;
-            }
-
-            .seccion-modelos {
-                width: 100%;
-                border-left: none; 
-                border-top: 1px solid #333; 
-                padding-left: 0;
-                padding-top: 20px;
-            }
-
-            .selector-calidad, .grupo-colores {
-                justify-content: center;
-            }
+            body { overflow-y: auto; }
+            .escaparate { flex-direction: column; height: auto; padding: 40px 20px; }
+            .swiper { width: 100%; height: 60vh; }
+            .swiper-slide { width: 320px; }
+            .panel-lateral { width: 100%; max-width: 400px; }
         }
     </style>
 </head>
 <body>
 
-    <h1>OBSIDIAN</h1>
+    <video autoplay loop muted playsinline class="video-fondo">
+        <source src="/estrellas.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
 
-    <div class="escenario">
+    <div class="escaparate">
         
-        <video autoplay loop muted playsinline class="video-fondo">
-            <source src="/tren-movimiento.mp4" type="video/mp4">
-        </video>
-        
-        <div class="overlay-oscuro"></div>
-
-        <div class="barra-perchero"></div>
-
-        <div class="contenedor-ropa">
-            
-            <!-- HOODIE MURCIELAGO -->
-            <div class="prenda-colgada">
-                <img src="/hoddie2.png" alt="Hoodie Perfil" class="img-perfil">
-                <img src="/hoodie2-frente.png" alt="Hoodie Frente" class="img-frente">
-                <div class="etiqueta-nombre">HODDIE BOXY FIT MURCIELAGO</div>
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
                 
-                <div class="panel-detalles">
-                    
-                    <!-- COLUMNA 1: Detalles y Selectores -->
-                    <div class="info-principal">
-                        <div class="precio-etiqueta">$22.00</div>
-                        
-                        <div class="selector-calidad">
-                            <button class="btn-calidad activo" data-target="grupo-100">HOODIE 100%</button>
-                            <button class="btn-calidad" data-target="grupo-65">HOODIE 65%</button>
-                            <button class="btn-calidad" data-target="grupo-zip-65">ZIP HOODIE 65%</button>
-                        </div>
-
-                        <p class="desc-etiqueta">Hoodie Gris boxy fit en corte murciélago 100% algodón.</p>
-                        
-                        <!-- COLORES 100% ALGODON -->
-                        <div class="grupo-colores activo" id="grupo-100">
-                            <div class="color-tag" data-img="/hoodie2-frente.png" data-precio="$22.00" data-desc="Hoodie Gris boxy fit en corte murciélago 100% algodón." style="background-color: #b3b3b3;" title="Gris"></div>
-                            <div class="color-tag" data-img="/hoodie-vino.png" data-precio="$22.00" data-desc="Hoodie Vino boxy fit en corte murciélago 100% algodón." style="background-color: #4a0404;" title="Vino"></div>
-                        </div>
-
-                        <!-- COLORES 65% ALGODON -->
-                        <div class="grupo-colores" id="grupo-65">
-                            <div class="color-tag" data-img="/negra.png" data-lookbook-imgs="/77.jpeg,/66.jpeg" data-precio="$17.00" data-desc="Hoodie Negro boxy fit en corte murciélago 65% algodón." style="background-color: #1a1a1a;" title="Negro"></div>
-                            <div class="color-tag" data-img="/hoodie-rojo.png" data-precio="$17.00" data-desc="Hoodie Rojo boxy fit en corte murciélago 65% algodón." style="background-color: #aa0000;" title="Rojo"></div>
-                            <div class="color-tag" data-img="/hoodie-gris65.png" data-precio="$17.00" data-desc="Hoodie Gris boxy fit en corte murciélago 65% algodón." style="background-color: #8c8c8c;" title="Gris"></div>
-                            <div class="color-tag" data-img="/hoodie-rosado.png" data-precio="$17.00" data-desc="Hoodie Rosado boxy fit en corte murciélago 65% algodón." style="background-color: #eebbce;" title="Rosado"></div>
-                            <div class="color-tag" data-img="/hoodie-crema.png" data-precio="$17.00" data-desc="Hoodie Crema boxy fit en corte murciélago 65% algodón." style="background-color: #f5f5dc;" title="Crema"></div>
-                        </div>
-
-                        <!-- GRUPO: ZIP HOODIE 65% ALGODON -->
-                        <div class="grupo-colores" id="grupo-zip-65">
-                            <div class="color-tag" data-img="/zip-negra.png" data-lookbook-imgs="/negra1.jpeg,/negra2.jpeg,/negra3.jpeg" data-precio="$20.00" data-desc="Zip Hoodie Negro boxy fit con cierre 65% algodón." style="background-color: #1a1a1a;" title="Negro"></div>
-                            <div class="color-tag" data-img="/zip-rojo.png" data-lookbook-imgs="/roja1.jpeg,/roja2.jpeg" data-precio="$20.00" data-desc="Zip Hoodie Rojo boxy fit con cierre 65% algodón." style="background-color: #aa0000;" title="Rojo"></div>
-                            <div class="color-tag" data-img="/zip-gris.png" data-lookbook-imgs="/gris1.jpeg,/gris2.jpeg,/gris3.jpeg" data-precio="$20.00" data-desc="Zip Hoodie Gris boxy fit con cierre 65% algodón." style="background-color: #8c8c8c;" title="Gris"></div>
-                            <div class="color-tag" data-img="/zip-rosa.png" data-lookbook-imgs="/rosa1.jpeg,/rosa2.jpeg" data-precio="$20.00" data-desc="Zip Hoodie Rosado boxy fit con cierre 65% algodón." style="background-color: #eebbce;" title="Rosado"></div>
-                            <!-- AQUI ESTÁ LA CORRECCIÓN: ahora apunta a negra1.jpeg y negra3.jpeg -->
-                            <div class="color-tag" data-img="/zip-crema.png" data-lookbook-imgs="/negra1.jpeg,/negra3.jpeg" data-precio="$20.00" data-desc="Zip Hoodie Crema boxy fit con cierre 65% algodón." style="background-color: #f5f5dc;" title="Crema"></div>
-                        </div>
-                    </div>
-
-                    <!-- COLUMNA 2: GALERÍA DE MODELOS -->
-                    <div class="seccion-modelos" id="lookbook-murcielago">
-                        <h3 class="titulo-modelos">LOOKBOOK</h3>
-                        <p class="desc-etiqueta" style="margin-top: -10px; font-size: 11px;">Así se ve puesto en nuestros modelos.</p>
-                        <!-- Las imágenes ahora se inyectan dinámicamente con JavaScript -->
-                    </div>
-
+                <!-- OUTFIT 1 -->
+                <div class="swiper-slide" 
+                     data-nombre="HOODIE MURCIÉLAGO" 
+                     data-precio="$22.00" 
+                     data-desc="Hoodie Boxy Fit en corte murciélago 100% algodón."
+                     data-mockup="/hoddierosa.png"
+                     data-has-colors="false">
+                    <img src="/outfit1.png" alt="Outfit 1">
                 </div>
+
+                <!-- OUTFIT 2 (TIENE LA OPCIÓN DE COLORES Y MODELOS) -->
+                <div class="swiper-slide" 
+                     data-nombre="ZIP HOODIE MURCIÉLAGO" 
+                     data-precio="$17.00" 
+                     data-desc="Zip hoodie corte murciélago boxy fit gris."
+                     data-mockup="/zip-gris.png"
+                     data-has-colors="true">
+                    <img src="/outfit2.png" alt="Outfit 2">
+                </div>
+
+                <!-- OUTFIT 3 -->
+                <div class="swiper-slide" 
+                     data-nombre="LOOK APEX" 
+                     data-precio="$40.00" 
+                     data-desc="Apex Tee Boxy Fit sobre Slong Sleeve base, completando con estilo urbano."
+                     data-mockup=""
+                     data-has-colors="false">
+                    <img src="/outfit3.png" alt="Outfit 3">
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="panel-lateral">
+            
+            <div class="vista-principal" id="vista-principal">
+                <div class="panel-encabezado">
+                    <span class="etiqueta-in-look">En este Look:</span>
+                    <div class="nombre-outfit" id="panel-nombre">CARGANDO...</div>
+                    <div class="precio-outfit" id="panel-precio">--</div>
+                </div>
+                
+                <!-- AQUÍ SE APLICA EL FONDO BLANCO -->
+                <div class="contenedor-mockup" id="panel-mockup-container" style="display: none;">
+                    <img src="" id="panel-mockup" alt="Prenda destacada">
+                </div>
+
+                <p class="desc-outfit" id="panel-desc">--</p>
+                
+                <a href="#" class="btn-comprar">COMPRAR LOOK</a>
+                <button id="btn-abrir-colores" class="btn-secundario" style="display: none;">VER MÁS COLORES DE ZIP HOODIES</button>
             </div>
 
-            <!-- APEX TEE -->
-            <div class="prenda-colgada">
-                <img src="/Camiseta2.png" alt="Camiseta Perfil" class="img-perfil">
-                <img src="/camiseta2-frente.png" alt="Camiseta Frente" class="img-frente">
-                <div class="etiqueta-nombre">APEX TEE BOXY FIT</div>
-            </div>
+            <div class="vista-colores" id="vista-colores">
+                <div class="panel-encabezado">
+                    <span class="etiqueta-in-look">Personalizar Prenda:</span>
+                    <div class="nombre-outfit">ESCOGER COLOR</div>
+                </div>
+                
+                <!-- AQUÍ TAMBIÉN SE APLICA EL FONDO BLANCO -->
+                <div class="contenedor-mockup">
+                    <img src="/zip-gris.png" id="mockup-color-preview" alt="Color Preview">
+                </div>
 
-            <div class="prenda-colgada">
-                <img src="/blanca2.png" alt="Camiseta Blanca Perfil" class="img-perfil">
-                <img src="/blanca2-frente.png" alt="Camiseta Blanca Frente" class="img-frente">
-                <div class="etiqueta-nombre">CAMISETA BOXY FIT</div>
-            </div>
+                <div class="selector-colores">
+                    <button class="color-btn" style="background-color: #1a1a1a;" title="Negro" data-img="/zip-negra.png" data-modelo="/negra8.png"></button>
+                    <button class="color-btn" style="background-color: #eebbce;" title="Rosado" data-img="/zip-rosa.png" data-modelo="/outfit2.png"></button>
+                    <button class="color-btn" style="background-color: #0044cc;" title="Azul Eléctrico" data-img="/zip-azul.png" data-modelo="/outfit2.png"></button>
+                    <button class="color-btn" style="background-color: #aa0000;" title="Rojo" data-img="/zip-rojo.png" data-modelo="/outfit2.png"></button>
+                    <button class="color-btn activo" style="background-color: #8c8c8c;" title="Gris" data-img="/zip-gris.png" data-modelo="/outfit2.png"></button>
+                </div>
 
-            <div class="prenda-colgada">
-                <img src="/slong2.png" alt="Manga Larga Perfil" class="img-perfil">
-                <img src="/slong2-frente.png" alt="Manga Larga Frente" class="img-frente">
-                <div class="etiqueta-nombre">SLONG SLEEVE</div>
+                <a href="#" class="btn-comprar">COMPRAR ESTE COLOR</a>
+                <button id="btn-cerrar-colores" class="btn-secundario">VOLVER AL CARRUSEL</button>
             </div>
 
         </div>
+
     </div>
 
-    <script>
-        const prendas = document.querySelectorAll('.prenda-colgada');
-        const contenedor = document.querySelector('.contenedor-ropa');
-        const body = document.body;
-
-        prendas.forEach(prenda => {
-            prenda.addEventListener('click', () => {
-                if (prenda.classList.contains('activa')) {
-                    prenda.classList.remove('activa');
-                    contenedor.classList.remove('ropa-enfocada');
-                    body.classList.remove('modo-enfocado');
-                    
-                    const panel = prenda.querySelector('.panel-detalles');
-                    if (panel) panel.scrollTop = 0;
-                } else {
-                    prendas.forEach(p => {
-                        p.classList.remove('activa');
-                        const pPanel = p.querySelector('.panel-detalles');
-                        if (pPanel) pPanel.scrollTop = 0;
-                    });
-                    prenda.classList.add('activa');
-                    contenedor.classList.add('ropa-enfocada');
-                    body.classList.add('modo-enfocado');
+    <script is:inline src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <script is:inline>
+        const swiper = new Swiper(".mySwiper", {
+            grabCursor: true,      
+            centeredSlides: true,  
+            slidesPerView: "auto", 
+            loop: false,             
+            spaceBetween: 10,        
+            speed: 600,              
+            on: {
+                init: function () {
+                    actualizarPanelDeCompras(this);
+                },
+                slideChange: function () {
+                    actualizarPanelDeCompras(this);
                 }
-            });
+            }
         });
 
-        const botonesCalidad = document.querySelectorAll('.btn-calidad');
-        botonesCalidad.forEach(boton => {
-            boton.addEventListener('click', (e) => {
-                e.stopPropagation(); 
-                
-                if(boton.classList.contains('activo')) return;
+        function actualizarPanelDeCompras(swiperInstance) {
+            const slideActivo = swiperInstance.slides[swiperInstance.activeIndex];
+            if (!slideActivo) return;
 
-                const panelDetalles = boton.closest('.panel-detalles');
-                
-                const botonesHermanos = panelDetalles.querySelectorAll('.btn-calidad');
-                botonesHermanos.forEach(b => b.classList.remove('activo'));
-                boton.classList.add('activo');
+            const nombre = slideActivo.getAttribute('data-nombre') || '';
+            const precio = slideActivo.getAttribute('data-precio') || '';
+            const desc = slideActivo.getAttribute('data-desc') || '';
+            const mockup = slideActivo.getAttribute('data-mockup') || ''; 
+            const hasColors = slideActivo.getAttribute('data-has-colors') === 'true';
 
-                const gruposColores = panelDetalles.querySelectorAll('.grupo-colores');
-                gruposColores.forEach(grupo => grupo.classList.remove('activo'));
+            document.getElementById('panel-nombre').innerText = nombre;
+            document.getElementById('panel-precio').innerText = precio;
+            document.getElementById('panel-desc').innerText = desc;
 
-                const targetId = boton.getAttribute('data-target');
-                const grupoObjetivo = panelDetalles.querySelector(`#${targetId}`);
-                if(grupoObjetivo) {
-                    grupoObjetivo.classList.add('activo');
-                    
-                    const primerColor = grupoObjetivo.querySelector('.color-tag');
-                    if(primerColor) {
-                        primerColor.click();
-                    }
-                }
-            });
+            const mockupContainer = document.getElementById('panel-mockup-container');
+            const mockupImg = document.getElementById('panel-mockup');
+            const btnAbrirColores = document.getElementById('btn-abrir-colores');
+
+            if (mockup.trim() !== "") {
+                mockupImg.src = mockup;
+                mockupContainer.style.display = 'flex'; 
+            } else {
+                mockupImg.src = "";
+                mockupContainer.style.display = 'none'; 
+            }
+
+            if (hasColors) {
+                btnAbrirColores.style.display = 'block';
+                document.getElementById('mockup-color-preview').src = mockup; 
+            } else {
+                btnAbrirColores.style.display = 'none';
+            }
+        }
+
+        document.getElementById('btn-abrir-colores').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.body.classList.add('modo-colores');
+            swiper.allowTouchMove = false; 
         });
 
-        const colores = document.querySelectorAll('.color-tag');
-        colores.forEach(tag => {
-            tag.addEventListener('click', (e) => {
-                e.stopPropagation(); 
-                
-                const nuevaImg = tag.getAttribute('data-img');
-                const nuevaDesc = tag.getAttribute('data-desc');
-                const nuevoPrecio = tag.getAttribute('data-precio');
-                const lookbookImgsRaw = tag.getAttribute('data-lookbook-imgs'); 
-                
-                const prendaPadre = tag.closest('.prenda-colgada');
-                const panelDetalles = prendaPadre.querySelector('.panel-detalles');
-                
-                prendaPadre.querySelector('.img-frente').src = nuevaImg;
-                
-                const textoDescripcion = prendaPadre.querySelector('.desc-etiqueta');
-                if (textoDescripcion && nuevaDesc) {
-                    textoDescripcion.innerText = nuevaDesc;
-                }
+        document.getElementById('btn-cerrar-colores').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.body.classList.remove('modo-colores');
+            swiper.allowTouchMove = true; 
+        });
 
-                const textoPrecio = prendaPadre.querySelector('.precio-etiqueta');
-                if (textoPrecio && nuevoPrecio) {
-                    textoPrecio.innerText = nuevoPrecio;
-                }
-                
-                const seccionModelos = prendaPadre.querySelector('.seccion-modelos');
-                if (seccionModelos) {
-                    const imgsAnteriores = seccionModelos.querySelectorAll('.img-modelo');
-                    imgsAnteriores.forEach(img => img.remove());
+        const botonesColor = document.querySelectorAll('.color-btn');
+        const imgPreview = document.getElementById('mockup-color-preview');
 
-                    if (lookbookImgsRaw) {
-                        seccionModelos.classList.add('activo');
-                        const imgsArray = lookbookImgsRaw.split(',');
-                        
-                        imgsArray.forEach(src => {
-                            const nuevaImagen = document.createElement('img');
-                            nuevaImagen.src = src.trim();
-                            nuevaImagen.alt = "Modelo Lookbook";
-                            nuevaImagen.className = "img-modelo";
-                            seccionModelos.appendChild(nuevaImagen);
-                        });
-                    } else {
-                        seccionModelos.classList.remove('activo');
-                    }
-                }
+        botonesColor.forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 
-                if (panelDetalles) {
-                    panelDetalles.scrollTop = 0;
+                botonesColor.forEach(b => b.classList.remove('activo'));
+                e.target.classList.add('activo');
+                
+                const nuevaImg = e.target.getAttribute('data-img');
+                const nuevoModelo = e.target.getAttribute('data-modelo'); 
+                
+                const slideActivo = document.querySelector('.swiper-slide-active');
+                const imgModeloGigante = slideActivo.querySelector('img');
+                
+                slideActivo.setAttribute('data-mockup', nuevaImg);
+
+                imgPreview.style.opacity = 0;
+                setTimeout(() => {
+                    imgPreview.src = nuevaImg;
+                    imgPreview.style.opacity = 1;
+                }, 200);
+
+                if(imgModeloGigante && nuevoModelo) {
+                    imgModeloGigante.style.opacity = 0;
+                    setTimeout(() => {
+                        imgModeloGigante.src = nuevoModelo;
+                        imgModeloGigante.style.opacity = 1;
+                    }, 200);
                 }
             });
         });
     </script>
-
 </body>
 </html>
