@@ -15,10 +15,12 @@
     <!-- Librería CSS de Swiper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
-    <style>
+    <style is:global>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        body {
+        html, body {
+            width: 100%;
+            height: 100%;
             background-color: #000000; 
             font-family: sans-serif;
             overflow: hidden; 
@@ -27,8 +29,7 @@
 
         .video-fondo {
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100vw;
             height: 100vh;
             object-fit: cover;
@@ -37,8 +38,7 @@
 
         .overlay {
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.4); 
@@ -46,38 +46,227 @@
         }
 
         .escaparate {
-            position: relative; 
+            position: fixed; 
+            inset: 0;
             z-index: 10; 
             display: flex;
             align-items: center; 
             justify-content: space-between; 
             height: 100vh; 
             width: 100%;
-            max-width: 1700px; 
+            max-width: 1650px; 
             margin: 0 auto;
-            padding: 0 50px; 
+            padding: 20px 50px; 
             gap: 40px;
         }
 
         /* ================================
-           ZONA IZQUIERDA: CARRUSEL
+           MODO CENTRADO (SOLO CUANDO UN COLOR NO TIENE FOTOS)
+           ================================ */
+        body.modo-hoodie-centrado .escaparate {
+            justify-content: center !important;
+        }
+        body.modo-hoodie-centrado .galeria-vertical,
+        body.modo-hoodie-centrado .aviso-bajar-modelos {
+            display: none !important;
+        }
+
+        /* ================================
+           MODAL CENTRAL: ELECCIÓN DE ALGODÓN
+           ================================ */
+        .modal-algodon {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: aparecerSuave 0.25s ease;
+        }
+
+        @keyframes aparecerSuave {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-algodon-contenido {
+            width: 100%;
+            max-width: 720px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            text-align: center;
+        }
+
+        .modal-titulo-sub {
+            font-size: 12px;
+            letter-spacing: 3px;
+            color: #60a5fa;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .modal-titulo {
+            font-family: 'Anton', sans-serif;
+            font-size: 40px;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-transform: uppercase;
+            line-height: 1.05;
+        }
+
+        .tarjetas-algodon {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            width: 100%;
+        }
+
+        .tarjeta-calidad {
+            appearance: none;
+            -webkit-appearance: none;
+            position: relative;
+            background: linear-gradient(145deg, rgba(28, 28, 34, 0.95), rgba(12, 12, 16, 0.95));
+            border: 1.5px solid rgba(255, 255, 255, 0.16);
+            border-radius: 16px;
+            padding: 28px 24px;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            text-align: center;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65);
+        }
+
+        .tarjeta-calidad:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: #60a5fa;
+            box-shadow: 0 0 28px rgba(37, 99, 235, 0.55), 0 18px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .badge-calidad {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: rgba(37, 99, 235, 0.2);
+            color: #93c5fd;
+            border: 1px solid rgba(96, 165, 250, 0.4);
+        }
+
+        .tarjeta-calidad.premium .badge-calidad {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .titulo-calidad {
+            font-family: 'Anton', sans-serif;
+            font-size: 32px;
+            letter-spacing: 1.5px;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .precio-calidad {
+            font-family: 'Anton', sans-serif;
+            font-size: 34px;
+            color: #60a5fa;
+            letter-spacing: 1px;
+        }
+
+        .preview-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 2px 0;
+        }
+
+        .preview-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .desc-calidad {
+            font-size: 13px;
+            color: #bbb;
+            line-height: 1.4;
+        }
+
+        .cta-tarjeta {
+            margin-top: 6px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #111111;
+            font-family: 'Anton', sans-serif;
+            font-size: 15px;
+            letter-spacing: 1.5px;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .tarjeta-calidad:hover .cta-tarjeta {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-cerrar-modal-algodon {
+            appearance: none;
+            -webkit-appearance: none;
+            background: transparent;
+            color: #aaa;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-family: 'Anton', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-cerrar-modal-algodon:hover {
+            color: #fff;
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ================================
+           ZONA IZQUIERDA: CARRUSEL HORIZONTAL
            ================================ */
         .swiper {
-            width: 75%; 
-            height: 85vh; 
+            flex: 1;
+            min-width: 0;
+            height: 88vh; 
             padding: 0; 
+        }
+
+        body.modo-colores .swiper {
+            display: none;
         }
         
         .swiper-slide {
-            width: 500px; 
+            width: 460px; 
             height: 100%; 
             display: flex;
             justify-content: center;
-            align-items: flex-end; 
-            
+            align-items: center; 
             opacity: 1 !important; 
             transform: scale(0.75); 
-            transform-origin: bottom center; 
+            transform-origin: center center; 
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease; 
         }
         
@@ -85,69 +274,175 @@
             transform: scale(1); 
             z-index: 10; 
         }
-
-        body.modo-colores .swiper-slide:not(.swiper-slide-active) {
-            opacity: 0 !important;
-            pointer-events: none;
-        }
         
         .swiper-slide img {
             display: block;
             width: 100%;
             height: 100%;
             object-fit: contain;
-            object-position: bottom; 
+            object-position: center; 
             filter: drop-shadow(0px 25px 20px rgba(0,0,0,0.8));
             transition: opacity 0.3s ease; 
+        }
+
+        /* ================================
+           ZONA IZQUIERDA: GALERÍA VERTICAL (MODO ENFOQUE)
+           ================================ */
+        .galeria-vertical {
+            display: none;
+            flex: 1;
+            min-width: 0;
+            height: 88vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            position: relative;
+        }
+
+        .galeria-vertical::-webkit-scrollbar {
+            display: none;
+        }
+
+        body.modo-colores .galeria-vertical {
+            display: block;
+        }
+
+        .foto-vertical-item {
+            width: 100%;
+            height: 88vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 15px;
+        }
+
+        .foto-vertical-item img {
+            max-width: 85%;
+            max-height: 80vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 12px;
+            filter: drop-shadow(0px 20px 25px rgba(0, 0, 0, 0.85));
+        }
+
+        .aviso-subir {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            font-family: 'Anton', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            pointer-events: none;
+            animation: flotarArriba 1.8s infinite ease-in-out;
+        }
+
+        @keyframes flotarArriba {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -6px); }
+        }
+
+        /* AVISO PARPADEANTE SOLO PARA MÓVIL DEBAJO DEL MENÚ */
+        .aviso-bajar-modelos {
+            display: none;
+            text-align: center;
+            background: #2563eb;
+            color: #ffffff;
+            font-family: 'Anton', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1.5px;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 2px solid #93c5fd;
+            animation: parpadearLlamativo 1.1s infinite ease-in-out;
+        }
+
+        @keyframes parpadearLlamativo {
+            0%, 100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                box-shadow: 0 0 20px rgba(37, 99, 235, 0.95), 0 0 8px rgba(255, 255, 255, 0.7);
+            }
+            50% {
+                opacity: 0.3;
+                transform: translateY(5px) scale(0.97);
+                box-shadow: 0 0 4px rgba(37, 99, 235, 0.2);
+            }
         }
 
         /* ================================
            ZONA DERECHA: PANEL DE COMPRA
            ================================ */
         .panel-lateral {
-            width: 25%; 
-            max-width: 350px;
+            width: 340px; 
+            max-height: 92vh;
+            overflow-y: auto;
+            scrollbar-width: none;
             flex-shrink: 0; 
-            background: rgba(15, 15, 15, 0.6); 
+            background: rgba(15, 15, 15, 0.68); 
             backdrop-filter: blur(8px); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            padding: 30px; 
+            border: 1px solid rgba(255, 255, 255, 0.12); 
+            padding: 20px 24px; 
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
         }
 
-        .vista-principal { display: flex; flex-direction: column; gap: 12px; }
-        .vista-colores { display: none; flex-direction: column; gap: 12px; }
+        .panel-lateral::-webkit-scrollbar {
+            display: none;
+        }
+
+        .vista-principal { display: flex; flex-direction: column; gap: 10px; }
+        .vista-colores { display: none; flex-direction: column; gap: 9px; }
         
         body.modo-colores .vista-principal { display: none; }
-        body.modo-colores .vista-colores { display: flex; }
         
         .panel-encabezado { margin-bottom: 0px; }
 
         .etiqueta-in-look {
-            font-size: 12px;
+            font-size: 11px;
             color: #aaa; 
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             display: block;
         }
 
         .nombre-outfit {
             font-family: 'Anton', sans-serif;
-            font-size: 28px; 
+            font-size: 26px; 
             color: #fff; 
             letter-spacing: 1px;
             text-transform: uppercase;
             margin-bottom: 2px;
-            line-height: 1.1;
+            line-height: 1.05;
         }
         
         .precio-outfit {
-            font-size: 24px;
+            font-size: 22px;
             font-family: 'Anton', sans-serif;
             color: #f7f7f7; 
             letter-spacing: 1px;
+        }
+
+        .nombre-color-activo {
+            text-align: center;
+            font-size: 13px;
+            color: #ddd;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-family: 'Anton', sans-serif;
         }
 
         /* ================================
@@ -155,15 +450,14 @@
            ================================ */
         .contenedor-mockup {
             width: 100%;
-            height: 180px; 
-            /* AQUÍ FORZAMOS EL BLANCO ABSOLUTO IGNORANDO OTRAS REGLAS */
+            height: 145px; 
             background-color: #ffffff !important; 
             border-radius: 8px;
-            padding: 15px;
+            padding: 10px;
             display: flex; 
             justify-content: center;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             overflow: hidden; 
         }
         
@@ -176,23 +470,25 @@
         }
         
         .desc-outfit {
-            font-size: 15px;
+            font-size: 14px;
             color: #ddd; 
-            line-height: 1.5;
+            line-height: 1.4;
             font-weight: 300;
         }
 
         /* ================================
-           BOTONES Y SELECTOR
+           BOTONES, COLORES, MODELOS Y TALLAS
            ================================ */
         .btn-comprar {
-            margin-top: 10px;
+            appearance: none;
+            -webkit-appearance: none;
+            margin-top: 4px;
             background: #f7f7f7; 
             color: #111; 
             border: none;
-            padding: 16px;
+            padding: 13px;
             font-family: 'Anton', sans-serif;
-            font-size: 18px;
+            font-size: 17px;
             letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -200,15 +496,17 @@
             text-align: center;
             text-decoration: none;
         }
-        .btn-comprar:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2); }
+        .btn-comprar:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(255, 255, 255, 0.2); }
 
         .btn-secundario {
+            appearance: none;
+            -webkit-appearance: none;
             background: rgba(0, 0, 0, 0.5); 
             color: #f7f7f7; 
             border: 1px solid #555;
-            padding: 14px;
+            padding: 11px;
             font-family: 'Anton', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -221,14 +519,14 @@
         .selector-colores {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: 10px 0;
+            gap: 14px;
+            margin: 2px 0;
             flex-wrap: wrap;
         }
 
         .color-btn {
-            width: 35px;
-            height: 35px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             border: 2px solid #444;
             cursor: pointer;
@@ -237,18 +535,219 @@
         }
         .color-btn:hover, .color-btn.activo {
             transform: scale(1.2);
-            border-color: #111; 
+            border-color: #fff; 
+        }
+
+        /* SELECTOR DE MODELOS (BOXY FIT 1 / BOXY FIT 2) - ESTILO PREMIUM */
+        .selector-modelos {
+            display: flex;
+            gap: 8px;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 10px;
+            margin: 6px 0;
+        }
+
+        .modelo-btn {
+            appearance: none;
+            -webkit-appearance: none;
+            flex: 1;
+            padding: 11px 8px;
+            background: transparent;
+            color: #aaa;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            font-family: 'Anton', sans-serif;
+            font-size: 15px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .modelo-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .modelo-btn.activo {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #60a5fa;
+            box-shadow: 0 0 16px rgba(37, 99, 235, 0.75);
+        }
+
+        /* SELECTOR DE TALLAS (S, M, L) */
+        .bloque-tallas {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 2px;
+        }
+
+        .etiqueta-talla {
+            font-size: 11px;
+            color: #aaa;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .selector-tallas {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .talla-btn {
+            appearance: none;
+            -webkit-appearance: none;
+            flex: 1;
+            padding: 9px 0;
+            background: rgba(255, 255, 255, 0.06);
+            color: #ddd;
+            border: 1px solid #555;
+            border-radius: 6px;
+            font-family: 'Anton', sans-serif;
+            font-size: 15px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .talla-btn:hover {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        .talla-btn.activo {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #60a5fa;
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.7);
+            transform: scale(1.06);
+        }
+
+        /* ================================
+           INDICADOR DE DESLIZAMIENTO (SOLO MÓVIL)
+           ================================ */
+        .indicador-swipe {
+            display: none; 
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            pointer-events: none; 
+            color: #fff;
+            font-family: 'Anton', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            background: rgba(0, 0, 0, 0.55);
+            padding: 8px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: opacity 0.5s ease;
+            animation: moverLadoLado 2s infinite ease-in-out;
+        }
+
+        @keyframes moverLadoLado {
+            0%, 100% { transform: translate(-55%, -50%); }
+            50% { transform: translate(-45%, -50%); }
         }
 
         /* ================================
            MÓVILES
            ================================ */
         @media (max-width: 900px) {
-            body { overflow-y: auto; }
-            .escaparate { flex-direction: column; height: auto; padding: 40px 20px; }
-            .swiper { width: 100%; height: 60vh; }
+            html, body {
+                overflow-y: auto !important;
+                overflow-x: hidden;
+                height: auto !important;
+            }
+            .escaparate {
+                position: relative;
+                inset: auto;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                height: auto !important;
+                min-height: 100vh;
+                padding: 20px 16px 60px;
+                gap: 18px;
+            }
+            .swiper { width: 100%; height: 60vh; flex: none; }
             .swiper-slide { width: 320px; }
-            .panel-lateral { width: 100%; max-width: 400px; }
+            .panel-lateral { width: 100%; max-width: 400px; max-height: none; overflow: visible; }
+            .indicador-swipe { display: block; }
+
+            .modal-algodon {
+                overflow-y: auto;
+                align-items: center;
+            }
+            .modal-titulo {
+                font-size: 28px;
+            }
+            .tarjetas-algodon {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .tarjeta-calidad {
+                padding: 20px 18px;
+                gap: 10px;
+            }
+            .titulo-calidad, .precio-calidad {
+                font-size: 26px;
+            }
+
+            body.modo-colores .panel-lateral {
+                order: 1;
+            }
+            body.modo-colores .aviso-bajar-modelos {
+                display: block !important;
+                order: 2;
+                width: 100%;
+                max-width: 400px;
+            }
+            body.modo-colores .galeria-vertical {
+                display: flex !important;
+                flex-direction: column;
+                gap: 18px;
+                order: 3;
+                flex: none !important;
+                width: 100%;
+                max-width: 400px;
+                height: auto !important;
+                overflow: visible !important;
+                scroll-snap-type: none;
+            }
+            body.modo-colores .foto-vertical-item {
+                width: 100%;
+                height: auto !important;
+                padding: 0;
+            }
+            body.modo-colores .foto-vertical-item img {
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                max-height: 75vh;
+                object-fit: contain;
+                display: block;
+            }
+            body.modo-colores .aviso-subir {
+                display: none;
+            }
+
+            body.modo-hoodie-centrado .escaparate {
+                justify-content: center !important;
+                padding-bottom: 20px;
+            }
+            body.modo-hoodie-centrado .galeria-vertical,
+            body.modo-hoodie-centrado .aviso-bajar-modelos {
+                display: none !important;
+            }
         }
     </style>
 </head>
@@ -259,46 +758,127 @@
     </video>
     <div class="overlay"></div>
 
+    <!-- MODAL CENTRAL LLAMATIVO PARA ELEGIR ALGODÓN (OUTFIT 1) -->
+    <div class="modal-algodon" id="modal-algodon">
+        <div class="modal-algodon-contenido">
+            <div>
+                <div class="modal-titulo-sub">HOODIE MURCIÉLAGO • OBSIDIAN</div>
+                <h2 class="modal-titulo">ELIGE LA CALIDAD DE ALGODÓN</h2>
+            </div>
+
+            <div class="tarjetas-algodon">
+                <!-- OPCIÓN 100% ALGODÓN -->
+                <button class="tarjeta-calidad premium" id="btn-elegir-100">
+                    <span class="badge-calidad">EDICIÓN HEAVYWEIGHT</span>
+                    <div class="titulo-calidad">100% ALGODÓN</div>
+                    <div class="precio-calidad">$22.00</div>
+                    <div class="preview-dots">
+                        <span class="preview-dot" style="background: #5c0a1e;" title="Vino"></span>
+                        <span class="preview-dot" style="background: #7d8a82;" title="Froggy Gray"></span>
+                    </div>
+                    <p class="desc-calidad">Colores exclusivos: Vino y Froggy Gray.</p>
+                    <div class="cta-tarjeta">VER COLORES</div>
+                </button>
+
+                <!-- OPCIÓN 65% ALGODÓN -->
+                <button class="tarjeta-calidad" id="btn-elegir-65">
+                    <span class="badge-calidad">MÁS VARIEDAD</span>
+                    <div class="titulo-calidad">65% ALGODÓN</div>
+                    <div class="precio-calidad">$17.00</div>
+                    <div class="preview-dots">
+                        <span class="preview-dot" style="background: #1a1a1a;"></span>
+                        <span class="preview-dot" style="background: #eebbce;"></span>
+                        <span class="preview-dot" style="background: #0044cc;"></span>
+                        <span class="preview-dot" style="background: #aa0000;"></span>
+                        <span class="preview-dot" style="background: #8c8c8c;"></span>
+                    </div>
+                    <p class="desc-calidad">5 colores: Negro, Rosado, Azul, Rojo y Gris.</p>
+                    <div class="cta-tarjeta">VER COLORES</div>
+                </button>
+            </div>
+
+            <button class="btn-cerrar-modal-algodon" id="btn-cerrar-modal-algodon">VOLVER AL CARRUSEL</button>
+        </div>
+    </div>
+
     <div class="escaparate">
         
+        <!-- 1. CARRUSEL HORIZONTAL NORMAL -->
         <div class="swiper mySwiper">
+            <div class="indicador-swipe" id="aviso-deslizar">
+                ⟷ DESLIZA
+            </div>
+
             <div class="swiper-wrapper">
-                
-                <!-- OUTFIT 1 -->
+                <!-- OUTFIT 1 (HOODIES) -->
                 <div class="swiper-slide" 
                      data-nombre="HOODIE MURCIÉLAGO" 
                      data-precio="$22.00" 
-                     data-desc="Hoodie Boxy Fit en corte murciélago 100% algodón."
+                     data-desc="Hoodie Boxy Fit en corte murciélago. Disponible en 100% y 65% algodón."
                      data-mockup="/hoddierosa.png"
-                     data-has-colors="false">
+                     data-tipo="hoodie"
+                     data-btn-text="VER MÁS COLORES DE HOODIES">
                     <img src="/outfit1.png" alt="Outfit 1">
                 </div>
 
-                <!-- OUTFIT 2 (TIENE LA OPCIÓN DE COLORES Y MODELOS) -->
+                <!-- OUTFIT 2 (ZIP HOODIES) -->
                 <div class="swiper-slide" 
                      data-nombre="ZIP HOODIE MURCIÉLAGO" 
                      data-precio="$17.00" 
                      data-desc="Zip hoodie corte murciélago boxy fit gris."
                      data-mockup="/zip-gris.png"
-                     data-has-colors="true">
+                     data-tipo="zip"
+                     data-btn-text="VER MÁS COLORES DE ZIP HOODIES">
                     <img src="/outfit2.png" alt="Outfit 2">
                 </div>
 
-                <!-- OUTFIT 3 -->
+                <!-- OUTFIT 3 (CAMISETAS BOXY FIT) -->
                 <div class="swiper-slide" 
-                     data-nombre="LOOK APEX" 
-                     data-precio="$40.00" 
-                     data-desc="Apex Tee Boxy Fit sobre Slong Sleeve base, completando con estilo urbano."
-                     data-mockup=""
-                     data-has-colors="false">
+                     data-nombre="CAMISETAS BOXY FIT" 
+                     data-precio="$17.00" 
+                     data-desc="Camisetas corte Boxy Fit 100% algodón. Elige entre Boxy Fit 1 y Boxy Fit 2."
+                     data-mockup="/angel.png"
+                     data-tipo="camiseta"
+                     data-btn-text="VER CAMISETAS BOXY FIT">
                     <img src="/outfit3.png" alt="Outfit 3">
                 </div>
-                
+
+                <!-- OUTFIT 4 (BEISBOLERA OBSIDIAN BOXY FIT) -->
+                <div class="swiper-slide" 
+                     data-nombre="BEISBOLERA OBSIDIAN BOXY FIT" 
+                     data-precio="$7.00" 
+                     data-desc="Camiseta beisbolera Obsidian en corte Boxy Fit."
+                     data-mockup="/Beisbolera.png"
+                     data-tipo="directo"
+                     data-btn-text="">
+                    <img src="/outfit4.png" alt="Outfit 4">
+                </div>
+
+                <!-- OUTFIT 5 (LONG SLEEVE) -->
+                <div class="swiper-slide" 
+                     data-nombre="LONG SLEEVE BOXY FIT" 
+                     data-precio="$20.00" 
+                     data-desc="Long Sleeve Boxy Fit. Disponible en Rosado, Negro y Blanco."
+                     data-mockup="/longrosa.png"
+                     data-tipo="longsleeve"
+                     data-btn-text="VER MÁS COLORES DE LONG SLEEVE">
+                    <img src="/outfit5.png" alt="Outfit 5">
+                </div>
             </div>
         </div>
 
+        <!-- 2. GALERÍA VERTICAL (SE ACTIVA CUANDO EL PRODUCTO TIENE FOTOS) -->
+        <div class="galeria-vertical" id="galeria-vertical"></div>
+
+        <!-- AVISO PARPADEANTE SOLO PARA MÓVIL -->
+        <div class="aviso-bajar-modelos" id="aviso-bajar-modelos">
+            ↓ DESLIZA PARA VER LA PRENDA EN LOS MODELOS ↓
+        </div>
+
+        <!-- 3. PANEL LATERAL DERECHO -->
         <div class="panel-lateral">
             
+            <!-- VISTA PRINCIPAL DEL CARRUSEL -->
             <div class="vista-principal" id="vista-principal">
                 <div class="panel-encabezado">
                     <span class="etiqueta-in-look">En este Look:</span>
@@ -306,38 +886,184 @@
                     <div class="precio-outfit" id="panel-precio">--</div>
                 </div>
                 
-                <!-- AQUÍ SE APLICA EL FONDO BLANCO -->
                 <div class="contenedor-mockup" id="panel-mockup-container" style="display: none;">
                     <img src="" id="panel-mockup" alt="Prenda destacada">
                 </div>
 
                 <p class="desc-outfit" id="panel-desc">--</p>
+
+                <!-- SELECTOR DE TALLAS DIRECTO (BEISBOLERA) -->
+                <div class="bloque-tallas" id="bloque-tallas-principal" style="display: none;">
+                    <span class="etiqueta-talla">Escoger Talla</span>
+                    <div class="selector-tallas">
+                        <button class="talla-btn talla-principal-btn" data-talla="S">S</button>
+                        <button class="talla-btn talla-principal-btn activo" data-talla="M">M</button>
+                        <button class="talla-btn talla-principal-btn" data-talla="L">L</button>
+                    </div>
+                </div>
                 
-                <a href="#" class="btn-comprar">COMPRAR LOOK</a>
-                <button id="btn-abrir-colores" class="btn-secundario" style="display: none;">VER MÁS COLORES DE ZIP HOODIES</button>
+                <button id="btn-comprar-principal" class="btn-comprar">COMPRAR LOOK</button>
+                <button id="btn-abrir-colores" class="btn-secundario" style="display: none;">VER MÁS COLORES</button>
             </div>
 
-            <div class="vista-colores" id="vista-colores">
+            <!-- OUTFIT 1: HOODIES -->
+            <div class="vista-colores" id="vista-hoodie-colores">
+                <div class="panel-encabezado">
+                    <span class="etiqueta-in-look" id="subtitulo-hoodie-calidad">100% ALGODÓN</span>
+                    <div class="nombre-outfit">ESCOGER COLOR</div>
+                    <div class="precio-outfit" id="precio-hoodie-panel">$22.00</div>
+                </div>
+                
+                <div class="contenedor-mockup">
+                    <img src="/vino.png" id="mockup-hoodie-preview" alt="Hoodie Preview">
+                </div>
+
+                <div class="selector-colores" id="selector-colores-hoodie"></div>
+                <div class="nombre-color-activo" id="nombre-color-hoodie">VINO</div>
+
+                <div class="bloque-tallas">
+                    <span class="etiqueta-talla">Escoger Talla</span>
+                    <div class="selector-tallas">
+                        <button class="talla-btn talla-hoodie-btn" data-talla="S">S</button>
+                        <button class="talla-btn talla-hoodie-btn activo" data-talla="M">M</button>
+                        <button class="talla-btn talla-hoodie-btn" data-talla="L">L</button>
+                    </div>
+                </div>
+
+                <button id="btn-comprar-hoodie-ws" class="btn-comprar">COMPRAR ESTE COLOR</button>
+                <button id="btn-cambiar-calidad" class="btn-secundario">CAMBIAR ALGODÓN</button>
+                <button class="btn-secundario btn-volver-carrusel">VOLVER AL CARRUSEL</button>
+            </div>
+
+            <!-- OUTFIT 2: ZIP HOODIES -->
+            <div class="vista-colores" id="vista-zip">
                 <div class="panel-encabezado">
                     <span class="etiqueta-in-look">Personalizar Prenda:</span>
                     <div class="nombre-outfit">ESCOGER COLOR</div>
+                    <div class="precio-outfit">$17.00</div>
                 </div>
                 
-                <!-- AQUÍ TAMBIÉN SE APLICA EL FONDO BLANCO -->
                 <div class="contenedor-mockup">
                     <img src="/zip-gris.png" id="mockup-color-preview" alt="Color Preview">
                 </div>
 
                 <div class="selector-colores">
-                    <button class="color-btn" style="background-color: #1a1a1a;" title="Negro" data-img="/zip-negra.png" data-modelo="/negra8.png"></button>
-                    <button class="color-btn" style="background-color: #eebbce;" title="Rosado" data-img="/zip-rosa.png" data-modelo="/outfit2.png"></button>
-                    <button class="color-btn" style="background-color: #0044cc;" title="Azul Eléctrico" data-img="/zip-azul.png" data-modelo="/outfit2.png"></button>
-                    <button class="color-btn" style="background-color: #aa0000;" title="Rojo" data-img="/zip-rojo.png" data-modelo="/outfit2.png"></button>
-                    <button class="color-btn activo" style="background-color: #8c8c8c;" title="Gris" data-img="/zip-gris.png" data-modelo="/outfit2.png"></button>
+                    <button class="color-btn color-zip-btn" style="background-color: #1a1a1a;" title="Negro" 
+                            data-color-nombre="Negro"
+                            data-img="/zip-negra.png" 
+                            data-modelo="/negra8.png" 
+                            data-galeria=""></button>
+                    
+                    <button class="color-btn color-zip-btn" style="background-color: #eebbce;" title="Rosado" 
+                            data-color-nombre="Rosado"
+                            data-img="/zip-rosa.png" 
+                            data-modelo="" 
+                            data-galeria="/rosa1.jpeg,/rosa2.jpeg"></button>
+                    
+                    <button class="color-btn color-zip-btn" style="background-color: #0044cc;" title="Azul Eléctrico" 
+                            data-color-nombre="Azul Eléctrico"
+                            data-img="/zip-azul.png" 
+                            data-modelo="/outfit2.png" 
+                            data-galeria=""></button>
+                    
+                    <button class="color-btn color-zip-btn" style="background-color: #aa0000;" title="Rojo" 
+                            data-color-nombre="Rojo"
+                            data-img="/zip-rojo.png" 
+                            data-modelo="" 
+                            data-galeria="/roja1.jpeg,/roja2.jpeg,/gris3.jpeg"></button>
+                    
+                    <button class="color-btn color-zip-btn activo" style="background-color: #8c8c8c;" title="Gris" 
+                            data-color-nombre="Gris"
+                            data-img="/zip-gris.png" 
+                            data-modelo="/outfit2.png" 
+                            data-galeria="/gris1.jpeg,/roja1.jpeg,/gris2.jpeg"></button>
                 </div>
 
-                <a href="#" class="btn-comprar">COMPRAR ESTE COLOR</a>
-                <button id="btn-cerrar-colores" class="btn-secundario">VOLVER AL CARRUSEL</button>
+                <div class="bloque-tallas">
+                    <span class="etiqueta-talla">Escoger Talla</span>
+                    <div class="selector-tallas">
+                        <button class="talla-btn talla-zip-btn" data-talla="S">S</button>
+                        <button class="talla-btn talla-zip-btn activo" data-talla="M">M</button>
+                        <button class="talla-btn talla-zip-btn" data-talla="L">L</button>
+                    </div>
+                </div>
+
+                <button id="btn-comprar-whatsapp" class="btn-comprar">COMPRAR ESTE COLOR</button>
+                <button class="btn-secundario btn-volver-carrusel">VOLVER AL CARRUSEL</button>
+            </div>
+
+            <!-- OUTFIT 3: CAMISETAS BOXY FIT -->
+            <div class="vista-colores" id="vista-camisetas">
+                <div class="panel-encabezado">
+                    <span class="etiqueta-in-look">Camisetas Boxy Fit:</span>
+                    <div class="nombre-outfit" id="titulo-camiseta-activa">BOXY FIT 1</div>
+                    <div class="precio-outfit">$17.00</div>
+                </div>
+                
+                <div class="contenedor-mockup">
+                    <img src="/angel.png" id="mockup-camiseta-preview" alt="Camiseta Preview">
+                </div>
+
+                <div class="selector-modelos">
+                    <button class="modelo-btn activo" data-titulo="BOXY FIT 1" data-img="/angel.png">BOXY FIT 1</button>
+                    <button class="modelo-btn" data-titulo="BOXY FIT 2" data-img="/blanca2-frente.png">BOXY FIT 2</button>
+                </div>
+
+                <div class="bloque-tallas">
+                    <span class="etiqueta-talla">Escoger Talla</span>
+                    <div class="selector-tallas">
+                        <button class="talla-btn talla-camiseta-btn" data-talla="S">S</button>
+                        <button class="talla-btn talla-camiseta-btn activo" data-talla="M">M</button>
+                        <button class="talla-btn talla-camiseta-btn" data-talla="L">L</button>
+                    </div>
+                </div>
+
+                <button id="btn-comprar-camiseta-ws" class="btn-comprar">COMPRAR CAMISETA</button>
+                <button class="btn-secundario btn-volver-carrusel">VOLVER AL CARRUSEL</button>
+            </div>
+
+            <!-- OUTFIT 5: LONG SLEEVE (ROSADO, NEGRO Y BLANCO) -->
+            <div class="vista-colores" id="vista-longsleeve">
+                <div class="panel-encabezado">
+                    <span class="etiqueta-in-look">Long Sleeve Boxy Fit:</span>
+                    <div class="nombre-outfit">ESCOGER COLOR</div>
+                    <div class="precio-outfit">$20.00</div>
+                </div>
+                
+                <div class="contenedor-mockup">
+                    <img src="/longrosa.png" id="mockup-long-preview" alt="Long Sleeve Preview">
+                </div>
+
+                <div class="selector-colores">
+                    <button class="color-btn color-long-btn activo" style="background-color: #eebbce;" title="Rosado" 
+                            data-color-nombre="Rosado"
+                            data-img="/longrosa.png" 
+                            data-galeria="/outfit5.png,/rosa5.jpeg"></button>
+                    
+                    <button class="color-btn color-long-btn" style="background-color: #1a1a1a;" title="Negro" 
+                            data-color-nombre="Negro"
+                            data-img="/longnegra.png" 
+                            data-galeria="/negra5.jpeg"></button>
+                    
+                    <button class="color-btn color-long-btn" style="background-color: #ffffff;" title="Blanco" 
+                            data-color-nombre="Blanco"
+                            data-img="/longblanca.png" 
+                            data-galeria="/blanca5.jpeg,/blanca51.jpeg"></button>
+                </div>
+
+                <div class="nombre-color-activo" id="nombre-color-long">ROSADO</div>
+
+                <div class="bloque-tallas">
+                    <span class="etiqueta-talla">Escoger Talla</span>
+                    <div class="selector-tallas">
+                        <button class="talla-btn talla-long-btn" data-talla="S">S</button>
+                        <button class="talla-btn talla-long-btn activo" data-talla="M">M</button>
+                        <button class="talla-btn talla-long-btn" data-talla="L">L</button>
+                    </div>
+                </div>
+
+                <button id="btn-comprar-long-ws" class="btn-comprar">COMPRAR ESTE COLOR</button>
+                <button class="btn-secundario btn-volver-carrusel">VOLVER AL CARRUSEL</button>
             </div>
 
         </div>
@@ -347,6 +1073,45 @@
     <script is:inline src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
     <script is:inline>
+        const NUMERO_WHATSAPP = "593962596100";
+        let tipoActivo = "";
+        let nombreSlideActivo = "";
+        let precioSlideActivo = "";
+
+        // Variable talla directa (Outfit 4: Beisbolera)
+        let tallaPrincipalSeleccionada = "M";
+
+        // Variables Outfit 1 (Hoodies)
+        let materialSeleccionado = "100% Algodón";
+        let precioHoodieSeleccionado = "$22.00";
+        let colorHoodieSeleccionado = "Vino";
+        let tallaHoodieSeleccionada = "M";
+
+        const COLORES_HOODIE_100 = [
+            { nombre: "Vino", hex: "#5c0a1e", img: "/vino.png", galeria: "" },
+            { nombre: "Froggy Gray", hex: "#7d8a82", img: "/foggy.png", galeria: "" }
+        ];
+
+        const COLORES_HOODIE_65 = [
+            { nombre: "Negro", hex: "#1a1a1a", img: "/negra.png", galeria: "/pose1.jpeg,/pose2.jpeg" },
+            { nombre: "Rosado", hex: "#eebbce", img: "/hoddierosa.png", galeria: "" },
+            { nombre: "Azul Eléctrico", hex: "#0044cc", img: "/hoddierosa.png", galeria: "" },
+            { nombre: "Rojo", hex: "#aa0000", img: "/roja.png", galeria: "" },
+            { nombre: "Gris", hex: "#8c8c8c", img: "/gris.png", galeria: "" }
+        ];
+
+        // Variables Outfit 2 (Zip Hoodies)
+        let colorZipSeleccionado = "Gris";
+        let tallaZipSeleccionada = "M";
+
+        // Variables Outfit 3 (Camisetas Boxy Fit)
+        let camisetaSeleccionada = "BOXY FIT 1";
+        let tallaCamisetaSeleccionada = "M";
+
+        // Variables Outfit 5 (Long Sleeve)
+        let colorLongSeleccionado = "Rosado";
+        let tallaLongSeleccionada = "M";
+
         const swiper = new Swiper(".mySwiper", {
             grabCursor: true,      
             centeredSlides: true,  
@@ -360,6 +1125,10 @@
                 },
                 slideChange: function () {
                     actualizarPanelDeCompras(this);
+                },
+                touchStart: function () {
+                    const aviso = document.getElementById('aviso-deslizar');
+                    if (aviso) aviso.style.opacity = '0';
                 }
             }
         });
@@ -368,19 +1137,22 @@
             const slideActivo = swiperInstance.slides[swiperInstance.activeIndex];
             if (!slideActivo) return;
 
-            const nombre = slideActivo.getAttribute('data-nombre') || '';
-            const precio = slideActivo.getAttribute('data-precio') || '';
+            nombreSlideActivo = slideActivo.getAttribute('data-nombre') || '';
+            precioSlideActivo = slideActivo.getAttribute('data-precio') || '';
             const desc = slideActivo.getAttribute('data-desc') || '';
             const mockup = slideActivo.getAttribute('data-mockup') || ''; 
-            const hasColors = slideActivo.getAttribute('data-has-colors') === 'true';
+            tipoActivo = slideActivo.getAttribute('data-tipo') || '';
+            const btnText = slideActivo.getAttribute('data-btn-text') || '';
 
-            document.getElementById('panel-nombre').innerText = nombre;
-            document.getElementById('panel-precio').innerText = precio;
+            document.getElementById('panel-nombre').innerText = nombreSlideActivo;
+            document.getElementById('panel-precio').innerText = precioSlideActivo;
             document.getElementById('panel-desc').innerText = desc;
 
             const mockupContainer = document.getElementById('panel-mockup-container');
             const mockupImg = document.getElementById('panel-mockup');
             const btnAbrirColores = document.getElementById('btn-abrir-colores');
+            const bloqueTallasPrincipal = document.getElementById('bloque-tallas-principal');
+            const btnComprarPrincipal = document.getElementById('btn-comprar-principal');
 
             if (mockup.trim() !== "") {
                 mockupImg.src = mockup;
@@ -390,57 +1162,429 @@
                 mockupContainer.style.display = 'none'; 
             }
 
-            if (hasColors) {
-                btnAbrirColores.style.display = 'block';
-                document.getElementById('mockup-color-preview').src = mockup; 
-            } else {
+            if (tipoActivo === 'directo') {
+                bloqueTallasPrincipal.style.display = 'flex';
                 btnAbrirColores.style.display = 'none';
+                btnComprarPrincipal.innerText = 'COMPRAR BEISBOLERA';
+            } else if (tipoActivo !== "") {
+                bloqueTallasPrincipal.style.display = 'none';
+                btnAbrirColores.innerText = btnText;
+                btnAbrirColores.style.display = 'block';
+                btnComprarPrincipal.innerText = 'COMPRAR LOOK';
+            } else {
+                bloqueTallasPrincipal.style.display = 'none';
+                btnAbrirColores.style.display = 'none';
+                btnComprarPrincipal.innerText = 'COMPRAR LOOK';
             }
+        }
+
+        // Selección de talla directa en panel principal (Beisbolera)
+        const botonesTallaPrincipal = document.querySelectorAll('.talla-principal-btn');
+        botonesTallaPrincipal.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                botonesTallaPrincipal.forEach(b => b.classList.remove('activo'));
+                e.target.classList.add('activo');
+                tallaPrincipalSeleccionada = e.target.getAttribute('data-talla');
+            });
+        });
+
+        // Botón comprar principal
+        document.getElementById('btn-comprar-principal').addEventListener('click', (e) => {
+            e.preventDefault();
+            let mensaje = '';
+            if (tipoActivo === 'directo') {
+                mensaje = `Hola! Deseo la ${nombreSlideActivo} en talla ${tallaPrincipalSeleccionada} (${precioSlideActivo}).`;
+            } else {
+                mensaje = `Hola! Me interesa el look: ${nombreSlideActivo} (${precioSlideActivo}).`;
+            }
+            const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        });
+
+        function cargarGaleriaVertical(modeloSrc, galeriaStr) {
+            const contenedor = document.getElementById('galeria-vertical');
+            contenedor.innerHTML = '';
+            contenedor.scrollTop = 0;
+
+            const listaFotos = [];
+            if (modeloSrc && modeloSrc.trim() !== '') {
+                listaFotos.push(modeloSrc.trim());
+            }
+            if (galeriaStr && galeriaStr.trim() !== '') {
+                galeriaStr.split(',').forEach(ruta => {
+                    if (ruta.trim() !== '') listaFotos.push(ruta.trim());
+                });
+            }
+
+            listaFotos.forEach((ruta, index) => {
+                const item = document.createElement('div');
+                item.className = 'foto-vertical-item';
+
+                const img = document.createElement('img');
+                img.src = ruta;
+                img.alt = `Vista ${index + 1}`;
+                item.appendChild(img);
+
+                if (index === 0 && listaFotos.length > 1) {
+                    const aviso = document.createElement('div');
+                    aviso.className = 'aviso-subir';
+                    aviso.innerText = '↑ DESLIZA HACIA ARRIBA';
+                    item.appendChild(aviso);
+                }
+
+                contenedor.appendChild(item);
+            });
+        }
+
+        function ocultarTodasLasSubvistas() {
+            document.getElementById('vista-hoodie-colores').style.display = 'none';
+            document.getElementById('vista-zip').style.display = 'none';
+            document.getElementById('vista-camisetas').style.display = 'none';
+            document.getElementById('vista-longsleeve').style.display = 'none';
+        }
+
+        function cerrarTodoYVolverAlCarrusel() {
+            document.getElementById('modal-algodon').style.display = 'none';
+            document.body.classList.remove('modo-colores');
+            document.body.classList.remove('modo-hoodie-centrado');
+            ocultarTodasLasSubvistas();
+            swiper.allowTouchMove = true; 
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         document.getElementById('btn-abrir-colores').addEventListener('click', (e) => {
             e.preventDefault();
-            document.body.classList.add('modo-colores');
-            swiper.allowTouchMove = false; 
+
+            if (tipoActivo === 'hoodie') {
+                document.getElementById('modal-algodon').style.display = 'flex';
+                swiper.allowTouchMove = false;
+                if (window.location.hash !== '#calidad') {
+                    history.pushState({ vista: 'calidad' }, '', '#calidad');
+                }
+            } else if (tipoActivo === 'zip') {
+                document.body.classList.remove('modo-hoodie-centrado');
+                document.body.classList.add('modo-colores');
+                swiper.allowTouchMove = false;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                if (window.location.hash !== '#colores') {
+                    history.pushState({ vista: 'zip' }, '', '#colores');
+                }
+
+                ocultarTodasLasSubvistas();
+                document.getElementById('vista-zip').style.display = 'flex';
+
+                const btnActivo = document.querySelector('.color-zip-btn.activo');
+                if (btnActivo) {
+                    colorZipSeleccionado = btnActivo.getAttribute('data-color-nombre') || 'Gris';
+                    cargarGaleriaVertical(
+                        btnActivo.getAttribute('data-modelo'),
+                        btnActivo.getAttribute('data-galeria')
+                    );
+                }
+            } else if (tipoActivo === 'camiseta') {
+                document.body.classList.remove('modo-hoodie-centrado');
+                document.body.classList.add('modo-colores');
+                swiper.allowTouchMove = false;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                if (window.location.hash !== '#camisetas') {
+                    history.pushState({ vista: 'camisetas' }, '', '#camisetas');
+                }
+
+                ocultarTodasLasSubvistas();
+                document.getElementById('vista-camisetas').style.display = 'flex';
+                cargarGaleriaVertical('/outfit3.png', '');
+            } else if (tipoActivo === 'longsleeve') {
+                document.body.classList.remove('modo-hoodie-centrado');
+                document.body.classList.add('modo-colores');
+                swiper.allowTouchMove = false;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                if (window.location.hash !== '#longsleeve') {
+                    history.pushState({ vista: 'longsleeve' }, '', '#longsleeve');
+                }
+
+                ocultarTodasLasSubvistas();
+                document.getElementById('vista-longsleeve').style.display = 'flex';
+
+                const btnActivo = document.querySelector('.color-long-btn.activo');
+                if (btnActivo) {
+                    colorLongSeleccionado = btnActivo.getAttribute('data-color-nombre') || 'Rosado';
+                    document.getElementById('nombre-color-long').innerText = colorLongSeleccionado.toUpperCase();
+                    cargarGaleriaVertical('', btnActivo.getAttribute('data-galeria'));
+                }
+            }
         });
 
-        document.getElementById('btn-cerrar-colores').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.body.classList.remove('modo-colores');
-            swiper.allowTouchMove = true; 
+        document.getElementById('btn-cerrar-modal-algodon').addEventListener('click', () => {
+            if (window.location.hash === '#calidad') {
+                history.back();
+            } else {
+                cerrarTodoYVolverAlCarrusel();
+            }
         });
 
-        const botonesColor = document.querySelectorAll('.color-btn');
-        const imgPreview = document.getElementById('mockup-color-preview');
+        // ==========================================
+        // OUTFIT 1: HOODIES
+        // ==========================================
+        function aplicarColorHoodie(col, conAnimacion = true) {
+            const previewImg = document.getElementById('mockup-hoodie-preview');
+            colorHoodieSeleccionado = col.nombre;
+            document.getElementById('nombre-color-hoodie').innerText = col.nombre.toUpperCase();
 
-        botonesColor.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                
-                botonesColor.forEach(b => b.classList.remove('activo'));
-                e.target.classList.add('activo');
-                
-                const nuevaImg = e.target.getAttribute('data-img');
-                const nuevoModelo = e.target.getAttribute('data-modelo'); 
-                
-                const slideActivo = document.querySelector('.swiper-slide-active');
-                const imgModeloGigante = slideActivo.querySelector('img');
-                
-                slideActivo.setAttribute('data-mockup', nuevaImg);
-
-                imgPreview.style.opacity = 0;
+            if (conAnimacion) {
+                previewImg.style.opacity = 0;
                 setTimeout(() => {
-                    imgPreview.src = nuevaImg;
-                    imgPreview.style.opacity = 1;
-                }, 200);
+                    previewImg.src = col.img;
+                    previewImg.style.opacity = 1;
+                }, 150);
+            } else {
+                previewImg.src = col.img;
+            }
 
-                if(imgModeloGigante && nuevoModelo) {
-                    imgModeloGigante.style.opacity = 0;
-                    setTimeout(() => {
-                        imgModeloGigante.src = nuevoModelo;
-                        imgModeloGigante.style.opacity = 1;
-                    }, 200);
+            if (col.galeria && col.galeria.trim() !== '') {
+                document.body.classList.remove('modo-hoodie-centrado');
+                cargarGaleriaVertical('', col.galeria);
+            } else {
+                document.body.classList.add('modo-hoodie-centrado');
+                document.getElementById('galeria-vertical').innerHTML = '';
+            }
+        }
+
+        function abrirColoresHoodie(calidad, precio, listaColores) {
+            materialSeleccionado = calidad;
+            precioHoodieSeleccionado = precio;
+
+            document.getElementById('subtitulo-hoodie-calidad').innerText = calidad.toUpperCase();
+            document.getElementById('precio-hoodie-panel').innerText = precio;
+
+            const contenedorColores = document.getElementById('selector-colores-hoodie');
+            contenedorColores.innerHTML = '';
+
+            listaColores.forEach((col, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'color-btn' + (index === 0 ? ' activo' : '');
+                btn.style.backgroundColor = col.hex;
+                btn.title = col.nombre;
+
+                btn.addEventListener('click', () => {
+                    contenedorColores.querySelectorAll('.color-btn').forEach(b => b.classList.remove('activo'));
+                    btn.classList.add('activo');
+                    aplicarColorHoodie(col, true);
+                });
+
+                contenedorColores.appendChild(btn);
+            });
+
+            document.getElementById('modal-algodon').style.display = 'none';
+            document.body.classList.add('modo-colores');
+            ocultarTodasLasSubvistas();
+            document.getElementById('vista-hoodie-colores').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (listaColores.length > 0) {
+                aplicarColorHoodie(listaColores[0], false);
+            }
+
+            if (window.location.hash !== '#colores-hoodie') {
+                history.pushState({ vista: 'hoodie-colores' }, '', '#colores-hoodie');
+            }
+        }
+
+        document.getElementById('btn-elegir-100').addEventListener('click', () => {
+            abrirColoresHoodie("100% Algodón", "$22.00", COLORES_HOODIE_100);
+        });
+
+        document.getElementById('btn-elegir-65').addEventListener('click', () => {
+            abrirColoresHoodie("65% Algodón", "$17.00", COLORES_HOODIE_65);
+        });
+
+        document.getElementById('btn-cambiar-calidad').addEventListener('click', () => {
+            if (window.location.hash === '#colores-hoodie') {
+                history.back();
+            } else {
+                document.body.classList.remove('modo-colores');
+                document.body.classList.remove('modo-hoodie-centrado');
+                ocultarTodasLasSubvistas();
+                document.getElementById('modal-algodon').style.display = 'flex';
+            }
+        });
+
+        const botonesTallaHoodie = document.querySelectorAll('.talla-hoodie-btn');
+        botonesTallaHoodie.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                botonesTallaHoodie.forEach(b => b.classList.remove('activo'));
+                e.target.classList.add('activo');
+                tallaHoodieSeleccionada = e.target.getAttribute('data-talla');
+            });
+        });
+
+        document.getElementById('btn-comprar-hoodie-ws').addEventListener('click', (e) => {
+            e.preventDefault();
+            const mensaje = `Hola! Deseo la Hoodie Murciélago (${materialSeleccionado} - ${precioHoodieSeleccionado}) color ${colorHoodieSeleccionado} en talla ${tallaHoodieSeleccionada}.`;
+            const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        });
+
+        document.querySelectorAll('.btn-volver-carrusel').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                cerrarTodoYVolverAlCarrusel();
+                if (window.location.hash) {
+                    history.replaceState(null, '', window.location.pathname);
                 }
             });
+        });
+
+        window.addEventListener('popstate', () => {
+            if (window.location.hash === '#calidad' && tipoActivo === 'hoodie') {
+                document.body.classList.remove('modo-colores');
+                document.body.classList.remove('modo-hoodie-centrado');
+                ocultarTodasLasSubvistas();
+                document.getElementById('modal-algodon').style.display = 'flex';
+            } else {
+                cerrarTodoYVolverAlCarrusel();
+            }
+        });
+
+        // ==========================================
+        // OUTFIT 2: ZIP HOODIES
+        // ==========================================
+        const botonesColorZip = document.querySelectorAll('.color-zip-btn');
+        const imgPreviewZip = document.getElementById('mockup-color-preview');
+
+        botonesColorZip.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                botonesColorZip.forEach(b => b.classList.remove('activo'));
+                e.target.classList.add('activo');
+                
+                colorZipSeleccionado = e.target.getAttribute('data-color-nombre') || 'Gris';
+                const nuevaImg = e.target.getAttribute('data-img');
+                const nuevoModelo = e.target.getAttribute('data-modelo'); 
+                const nuevaGaleria = e.target.getAttribute('data-galeria');
+                
+                const slideActivo = document.querySelector('.swiper-slide-active');
+                if (slideActivo) {
+                    slideActivo.setAttribute('data-mockup', nuevaImg);
+                    const imgModeloCarrusel = slideActivo.querySelector('img');
+                    if (imgModeloCarrusel && nuevoModelo) {
+                        imgModeloCarrusel.src = nuevoModelo;
+                    }
+                }
+
+                imgPreviewZip.style.opacity = 0;
+                setTimeout(() => {
+                    imgPreviewZip.src = nuevaImg;
+                    imgPreviewZip.style.opacity = 1;
+                }, 150);
+
+                cargarGaleriaVertical(nuevoModelo, nuevaGaleria);
+            });
+        });
+
+        const botonesTallaZip = document.querySelectorAll('.talla-zip-btn');
+        botonesTallaZip.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                botonesTallaZip.forEach(b => b.classList.remove('activo'));
+                e.target.classList.add('activo');
+                tallaZipSeleccionada = e.target.getAttribute('data-talla');
+            });
+        });
+
+        document.getElementById('btn-comprar-whatsapp').addEventListener('click', (e) => {
+            e.preventDefault();
+            const mensaje = `Hola! Deseo la Zip Hoodie Murciélago color ${colorZipSeleccionado} en talla ${tallaZipSeleccionada} ($17.00).`;
+            const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        });
+
+        // ==========================================
+        // OUTFIT 3: CAMISETAS BOXY FIT
+        // ==========================================
+        const botonesModeloCamiseta = document.querySelectorAll('.modelo-btn');
+        const imgPreviewCamiseta = document.getElementById('mockup-camiseta-preview');
+
+        botonesModeloCamiseta.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                botonesModeloCamiseta.forEach(b => b.classList.remove('activo'));
+                e.target.classList.add('activo');
+
+                camisetaSeleccionada = e.target.getAttribute('data-titulo');
+                const nuevaImg = e.target.getAttribute('data-img');
+
+                document.getElementById('titulo-camiseta-activa').innerText = camisetaSeleccionada;
+
+                imgPreviewCamiseta.style.opacity = 0;
+                setTimeout(() => {
+                    imgPreviewCamiseta.src = nuevaImg;
+                    imgPreviewCamiseta.style.opacity = 1;
+                }, 150);
+            });
+        });
+
+        const botonesTallaCamiseta = document.querySelectorAll('.talla-camiseta-btn');
+        botonesTallaCamiseta.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                botonesTallaCamiseta.forEach(b => b.classList.remove('activo'));
+                e.target.classList.add('activo');
+                tallaCamisetaSeleccionada = e.target.getAttribute('data-talla');
+            });
+        });
+
+        document.getElementById('btn-comprar-camiseta-ws').addEventListener('click', (e) => {
+            e.preventDefault();
+            const mensaje = `Hola! Deseo la Camiseta ${camisetaSeleccionada} en talla ${tallaCamisetaSeleccionada} ($17.00).`;
+            const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        });
+
+        // ==========================================
+        // OUTFIT 5: LONG SLEEVE
+        // ==========================================
+        const botonesColorLong = document.querySelectorAll('.color-long-btn');
+        const imgPreviewLong = document.getElementById('mockup-long-preview');
+
+        botonesColorLong.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                botonesColorLong.forEach(b => b.classList.remove('activo'));
+                e.target.classList.add('activo');
+
+                colorLongSeleccionado = e.target.getAttribute('data-color-nombre') || 'Rosado';
+                const nuevaImg = e.target.getAttribute('data-img');
+                const nuevaGaleria = e.target.getAttribute('data-galeria');
+
+                document.getElementById('nombre-color-long').innerText = colorLongSeleccionado.toUpperCase();
+
+                const slideActivo = document.querySelector('.swiper-slide-active');
+                if (slideActivo) {
+                    slideActivo.setAttribute('data-mockup', nuevaImg);
+                }
+
+                imgPreviewLong.style.opacity = 0;
+                setTimeout(() => {
+                    imgPreviewLong.src = nuevaImg;
+                    imgPreviewLong.style.opacity = 1;
+                }, 150);
+
+                cargarGaleriaVertical('', nuevaGaleria);
+            });
+        });
+
+        const botonesTallaLong = document.querySelectorAll('.talla-long-btn');
+        botonesTallaLong.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                botonesTallaLong.forEach(b => b.classList.remove('activo'));
+                e.target.classList.add('activo');
+                tallaLongSeleccionada = e.target.getAttribute('data-talla');
+            });
+        });
+
+        document.getElementById('btn-comprar-long-ws').addEventListener('click', (e) => {
+            e.preventDefault();
+            const mensaje = `Hola! Deseo la Long Sleeve Boxy Fit color ${colorLongSeleccionado} en talla ${tallaLongSeleccionada} ($20.00).`;
+            const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
         });
     </script>
 </body>
